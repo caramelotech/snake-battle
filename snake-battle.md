@@ -164,25 +164,53 @@
 
 **Objetivo:** Criar o jogo funcional com 2 jogadores locais
 
+**Comentário:** Graças ao monorepo TypeScript unificado, toda a setup é mais rápida. Não precisa configurar 2 projetos separados.
+
 #### Tasks
 
-- [ ] Setup do projeto (escolher engine/engine)
-  - Opções: Godot, Phaser, Pygame, Canvas HTML5, Unreal Engine
-  - Recomendação: **Godot** (gratuito, 2D, multiplayer built-in) ou **Phaser** (web-based)
-- [ ] Sistema de movimento e colisão
-- [ ] Mecânica de crescimento da cobra
-- [ ] Sistema de frutas e spawn
-- [ ] Controles do Jogador 1 (WASD ou Setas)
-- [ ] Controles do Jogador 2 (IJKL ou Gamepad 2)
-- [ ] UI básica (placar, vidas, game over)
-- [ ] Menu principal (Start, Selecionar Dificuldade)
-- [ ] Testes locais e balanceamento inicial
+- [ ] Setup do projeto TypeScript monorepo
+  - Criar estrutura de pastas (src/server, src/client, src/shared)
+  - Configurar tsconfig.json
+  - Instalar dependências (Express, Phaser, Socket.io, Vite)
+  - Scripts npm (dev, build, start)
+- [ ] Criar servidor Express básico com Socket.io
+  - Servir arquivos estáticos (HTML do Phaser)
+  - Listeners de conexão websocket
+- [ ] Criar ClienteSocket para comunicação real-time (futura)
+- [ ] Implementar Game Scene (Phaser)
+  - Canvas do jogo 640x640
+  - Sistema de grid 20x20
+  - Renderização inicial
+- [ ] Implementar Snake.ts (classe principal)
+  - Movimento contínuo em direções
+  - Detectar input (WASD para P1, Setas para P2)
+  - Renderizar corpo (segmentos)
+- [ ] Implementar Fruit.ts
+  - Spawn aleatório no mapa
+  - Colisão com cobra
+  - Crescimento ao ser comido
+- [ ] Sistema de colisões
+  - Cobra vs corpo próprio
+  - Cobra vs cobra inimiga
+  - Cobra vs paredes
+- [ ] UI básica
+  - Placar em tempo real (pontos P1 e P2)
+  - Game Over com vencedor
+  - Pontos e tamanho da cobra
+- [ ] Menu Scene
+  - Botão "Iniciar Jogo"
+  - Selecionador de Dificuldade (Easy, Normal, Hard)
+- [ ] Testes locais e balanceamento
+  - Testar controles (input responsivo)
+  - Testar colisões (sem falsos positivos)
+  - Testar spawn de frutas (distribuição aleatória justa)
 
 #### Entregáveis
 
-- Executável/WebGL do jogo funcional
-- Suporta Easy, Normal, Hard modos
-- 2 jogadores simultâneos
+- Build funcional do jogo (npm run build && npm run start)
+- 2 jogadores simultâneos no mesmo teclado
+- 3 níveis de dificuldade (Easy, Normal, Hard) balanceados
+- Nenhum bug crítico
 
 ### **Fase 2: Poderes e Melhorias Visuais** (Semana 3)
 
@@ -242,43 +270,77 @@
 - Build v0.4 com sistema de skins
 - 10+ skins disponíveis
 
-### **Fase 5: Preparação para Online** (Semana 6)
+### **Fase 5: Preparação para Online** (Semana 5-6)
 
-**Objetivo:** Arquitetura multi-player online
+**Objetivo:** Arquitetura de multiplayer online preparada
+
+**Comentário:** Como já estamos usando Socket.io desde o MVP, muita coisa já está pronta. Foco em separar lógica de game state, serialização e testar sincronização.
 
 #### Tasks
 
-- [ ] Refatoração do código para separar lógica de rede e gameplay
+- [ ] Implementar GameState.ts (classe centralizada)
+  - Posições das cobras
+  - Frutas no mapa
+  - Poderes ativos
+  - Placar
 - [ ] Implementar Game State Serialization
-- [ ] Escolher stack online (WebSocket + Node.js / ou WebRTC / ou Photon)
-- [ ] Criar servidor básico de matchmaking
-- [ ] Testes de latência e sincronização
+  - Serializar estado para envio via Socket.io
+  - Deserializar no cliente
+- [ ] Implementar reconciliação de estado
+  - Cliente mantém cópia do estado
+  - Servidor é autoridade
+  - Rollback se necessário
+- [ ] Criar lobby de matchmaking básico
+  - Tela de espera de jogador
+  - Designar P1 e P2
+- [ ] Testes com latência simulada
+  - Usar Chrome DevTools para simular lag
+  - Testar sincronização com 100ms+
 - [ ] Mock de online multiplayer local
+  - Simulação de rede between clients
 
 #### Entregáveis
 
-- Arquitetura escalável de rede
-- Servidor de teste funcionando
-- Build v0.5 com estrutura de multi-player
+- Código preparado para produção (nenhuma dependência de localStorage)
+- Lógica de game state centralizada
+- Sistema de sincronização testado
+- Build v0.5 com estrutura pronta para online
 
-### **Fase 6: Multiplayer Online** (Semana 7-8)
+### **Fase 6: Multiplayer Online & Deploy** (Semana 7-8)
 
-**Objetivo:** Jogo online funcional
+**Objetivo:** Jogo online em produção
 
 #### Tasks
 
-- [ ] Implementar conexão ao servidor
-- [ ] Sincronização de estado entre clientes
-- [ ] Lag compensation e rollback
-- [ ] Lobby e matchmaking
-- [ ] Chat integrado
-- [ ] Stats online (winrate, ranking)
+- [ ] Implementar autenticação com JWT
+  - Login/Register
+  - Persistir usuário no banco de dados (MongoDB ou PostgreSQL)
+- [ ] Implementar leaderboard online
+  - Salvar resultados após cada game
+  - Endpoints para rank global
+  - UI para mostrar top 10
+- [ ] Integrar persistência de dados
+  - Antes: localStorage (local)
+  - Agora: banco de dados no servidor
+  - Sincronizar skins desbloqueadas, preferências, stats
+- [ ] Setup de deployment
+  - Escolher plataforma (Render, Railway, Vercel, AWS)
+  - Configurar variáveis de ambiente (.env)
+  - Setup de banco de dados online (MongoDB Atlas ou PostGreSQL cloud)
+- [ ] Tests online
+  - Testar com múltiplos clientes reais
+  - Monitorar latência e performance
+  - Usar Sentry para error tracking
+- [ ] Documentação de deploy
+  - README com instruções de setup
+  - Guia de contribuição
 
 #### Entregáveis
 
 - Build v1.0 com multiplayer online
-- Servidor dedicado (cloud deployment)
-- Ranking global
+- Servidor em produção (Railway, Render, etc)
+- Ranking global funcionando
+- ~100ms latência máxima de jogo
 
 ### **Fase 7+: Expansões Contínuas**
 
@@ -290,138 +352,170 @@
 
 ## 🛠️ Stack Tecnológico Recomendado
 
-### ⭐ Opção Escolhida: Web-based (Phaser 3 + Node.js)
+### ⭐ Opção Escolhida: Full-Stack TypeScript (Monorepo Único)
 
-**Frontend:**
+**Vantagens dessa abordagem:**
 
-- **Engine:** Phaser 3.55+ (framework 2D HTML5)
-- **Linguagem:** JavaScript/TypeScript
-- **Build Tool:** Webpack ou Vite
-- **Package Manager:** npm ou yarn
+- 🎯 **Um único projeto** - Mesma linguagem (TypeScript) do servidor ao cliente
+- ⚡ **Desenvolvimento mais rápido** - Não precisa fazer build frontend separado
+- 🔄 **Hot reload** - Alterações refletem instantaneamente
+- 📦 **Compartilhamento de código** - Types, interfaces e utilities compartilhadas
+- 🚀 **Deploy simplificado** - Tudo é um único app Node.js
 
-**Backend:**
+**Stack:**
 
 - **Runtime:** Node.js 18+ LTS
-- **Framework:** Express.js
-- **Real-time:** Socket.io (WebSocket wrapper)
-- **Database:** MongoDB (NoSQL) ou PostgreSQL (SQL)
-- **Authentication:** JWT (JSON Web Tokens)
-- **Hosting:** Vercel (frontend), Railway/Render (backend)
+- **Linguagem:** TypeScript 5.0+
+- **Client Game Engine:** Phaser 3.55+ (rodando no navegador)
+- **Server Framework:** Express.js
+- **Real-time:** Socket.io (WebSocket)
+- **Build Tools:** Vite + esbuild (super rápido)
+- **Package Manager:** npm ou yarn
 
-**Ferramentas de Desenvolvimento:**
-
-- **Editor:** VS Code + Phaser Extension
-- **Debug:** Chrome DevTools + Phaser Inspector
-- **Version Control:** Git + GitHub
-- **Testing:** Jest (unit tests) + Cypress (E2E)
-- **Linting:** ESLint + Prettier
-- **Monitoring:** Sentry (error tracking)
-
-**Dependências Principais (Backend):**
+**Dependências Principais:**
 
 ```json
 {
-  "express": "^4.18.2",
-  "socket.io": "^4.5.4",
-  "mongoose": "^7.0.0",
-  "jsonwebtoken": "^9.0.0",
-  "cors": "^2.8.5",
-  "dotenv": "^16.0.3",
-  "nodemon": "^2.0.20"
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.5.4",
+    "socket.io-client": "^4.5.4",
+    "phaser": "^3.55.2",
+    "dotenv": "^16.0.3",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "vite": "^4.3.0",
+    "@vitejs/plugin-basic-ssl": "^1.0.0",
+    "ts-node": "^10.9.0",
+    "concurrently": "^8.0.0",
+    "nodemon": "^2.0.20",
+    "eslint": "^8.40.0",
+    "@typescript-eslint/parser": "^5.59.0",
+    "prettier": "^2.8.8"
+  }
 }
 ```
 
-**Dependências Principais (Frontend):**
-
-```json
-{
-  "phaser": "^3.55.2",
-  "socket.io-client": "^4.5.4",
-  "axios": "^1.3.0",
-  "webpack": "^5.75.0",
-  "webpack-cli": "^5.0.0",
-  "webpack-dev-server": "^4.11.1"
-}
-```
-
-**Estrutura de Pasta Recomendada:**
+**Estrutura de Pasta:**
 
 ```
 snake-battle/
-├── frontend/
-│   ├── src/
-│   │   ├── scenes/
-│   │   │   ├── MenuScene.js
-│   │   │   ├── GameScene.js
-│   │   │   └── GameOverScene.js
-│   │   ├── objects/
-│   │   │   ├── Snake.js
-│   │   │   ├── Fruit.js
-│   │   │   ├── PowerUp.js
-│   │   │   └── Obstacle.js
-│   │   ├── network/
-│   │   │   └── SocketClient.js
-│   │   ├── index.js
-│   │   └── config.js
-│   ├── assets/
-│   │   ├── sprites/
-│   │   ├── sounds/
-│   │   └── fonts/
-│   ├── webpack.config.js
-│   └── package.json
-├── backend/
-│   ├── src/
+├── src/
+│   ├── server/
 │   │   ├── routes/
-│   │   │   ├── auth.js
-│   │   │   ├── games.js
-│   │   │   └── leaderboard.js
+│   │   │   ├── auth.ts
+│   │   │   ├── games.ts
+│   │   │   └── leaderboard.ts
 │   │   ├── models/
-│   │   │   ├── User.js
-│   │   │   ├── GameSession.js
-│   │   │   └── Leaderboard.js
+│   │   │   ├── User.ts
+│   │   │   ├── GameSession.ts
+│   │   │   └── Leaderboard.ts
 │   │   ├── websocket/
-│   │   │   └── GameServer.js
+│   │   │   └── GameServer.ts
 │   │   ├── middleware/
-│   │   │   └── auth.js
+│   │   │   └── auth.ts
 │   │   ├── controllers/
-│   │   │   ├── gameController.js
-│   │   │   └── userController.js
-│   │   └── server.js
-│   ├── tests/
-│   ├── .env.example
-│   └── package.json
+│   │   │   ├── gameController.ts
+│   │   │   └── userController.ts
+│   │   ├── types/
+│   │   │   └── index.ts
+│   │   └── server.ts (entrypoint)
+│   ├── client/
+│   │   ├── scenes/
+│   │   │   ├── MenuScene.ts
+│   │   │   ├── GameScene.ts
+│   │   │   └── GameOverScene.ts
+│   │   ├── objects/
+│   │   │   ├── Snake.ts
+│   │   │   ├── Fruit.ts
+│   │   │   ├── PowerUp.ts
+│   │   │   └── Obstacle.ts
+│   │   ├── network/
+│   │   │   └── SocketClient.ts
+│   │   ├── types/
+│   │   │   └── index.ts
+│   │   ├── index.ts (entrypoint)
+│   │   └── config.ts
+│   ├── shared/
+│   │   ├── types.ts (tipos compartilhados)
+│   │   ├── config.ts (configurações gerais)
+│   │   └── constants.ts
+│   └── assets/
+│       ├── sprites/
+│       ├── sounds/
+│       └── fonts/
+├── dist/
+│   ├── server/ (build do servidor)
+│   └── client/ (build do cliente - servido como static)
+├── public/
+│   └── index.html
+├── vite.config.ts
+├── tsconfig.json
+├── package.json
+├── .env.example
+├── .gitignore
 └── README.md
 ```
 
 **Setup Inicial:**
 
 ```bash
-# Criar diretórios
+# Criar projeto
 mkdir snake-battle && cd snake-battle
 
-# Frontend
-mkdir frontend && cd frontend
+# Inicializar npm
 npm init -y
-npm install phaser socket.io-client axios
-npm install --save-dev webpack webpack-cli webpack-dev-server
 
-# Backend (outro terminal)
-mkdir backend && cd backend
-npm init -y
-npm install express socket.io mongoose jsonwebtoken cors dotenv
-npm install --save-dev nodemon
+# Instalar dependências
+npm install express socket.io socket.io-client phaser dotenv cors
+npm install -D typescript vite ts-node concurrently nodemon eslint @typescript-eslint/parser prettier @vitejs/plugin-basic-ssl
 
-# Iniciar desenvolvimento
-# Terminal 1 (frontend): npm run dev
-# Terminal 2 (backend): npm run start
+# Criar estrutura
+mkdir -p src/{server,client,shared} dist public
+
+# Criar arquivos TSConfig
+npx tsc --init
+```
+
+**Scripts npm (package.json):**
+
+```json
+{
+  "scripts": {
+    "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
+    "server:dev": "nodemon --exec ts-node src/server/server.ts",
+    "client:dev": "vite --host",
+    "build": "npm run build:client && npm run build:server",
+    "build:server": "tsc src/server --outDir dist/server",
+    "build:client": "vite build",
+    "start": "node dist/server/server.js",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write src/**/*.ts"
+  }
+}
+```
+
+**Workflow de Desenvolvimento:**
+
+```bash
+# Terminal único (graças ao concurrently)
+npm run dev
+
+# Vai rodar:
+# - Servidor Express em http://localhost:3000
+# - Vite dev server em http://localhost:5173
+# - Ambos com hot reload automático ao salvar arquivos
 ```
 
 **Performance Esperada:**
 
-- FPS: 60 FPS estável (até 4 players)
+- FPS: 60 FPS estável (até 4 players locais)
 - Latência Online: <100ms (mesmo servidor)
-- Bundle Size: ~150KB gzipped (frontend)
-- Load Time: <2 segundos em 4G
+- Bundle Size: ~120KB gzipped (cliente)
+- Load Time: <1 segundo em 4G
+- Build Time: <2 segundos (incremental)
 
 **Browser Support:**
 
@@ -430,54 +524,42 @@ npm install --save-dev nodemon
 - Safari 14+
 - Edge 90+
 
+**Facilidades do Monorepo:**
+
+✅ Compartilhar tipos TypeScript entre cliente e servidor  
+✅ Compartilhar constantes e configurações  
+✅ Deploy em um único comando  
+✅ Mesma base de código para lógica de game  
+✅ Debugging simplificado (um projeto Rails/Nest-like)
+
 ---
 
-### Opção 1: Godot (Alternativa - Prototipar Rápido)
+## 📐 Arquitetura de Código (TypeScript Full-Stack)
 
-- **Engine:** Godot 4.x
-- **Linguagem:** GDScript ou C#
-- **Multiplayer:** Godot's MultiplayerAPI built-in
-- **Deploy:** HTML5 Web Export, Windows/Mac/Linux
-- **Backend:** Node.js/Go para servidor
-- **Database:** PostgreSQL (ranking online)
+A arquitetura segue o padrão de separação entre Cliente (Phaser) e Servidor (Express) dentro de um único projeto:
 
-### Opção 3: Unity (Alternativa - AAA Quality)
+**Server (Node.js/Express):**
 
-- **Engine:** Unity 2D
-- **Multiplayer:** Mirror ou Netcode for GameObjects
-- **Backend:** PlayFab ou Custom
-- **Deploy:** WebGL, Windows, Mac, Linux
+- Autoridade do jogo (valida movimentos)
+- Gerencia estado do game (posições, frutas, poderes)
+- Broadcasting de estado para clientes via Socket.io
+- Endpoints REST para autenticação e leaderboard
 
-## 📐 Arquitetura de Código (Proposto)
+**Client (Phaser 3):**
 
-```
-project/
-├── scripts/
-│   ├── game/
-│   │   ├── Game.gd (Controller principal)
-│   │   ├── Snake.gd (Lógica de cobra)
-│   │   └── Grid.gd (Mapa e colisões)
-│   ├── ui/
-│   │   ├── Menu.gd
-│   │   ├── HUD.gd
-│   │   └── GameOver.gd
-│   ├── gameplay/
-│   │   ├── Fruit.gd
-│   │   ├── PowerUp.gd
-│   │   └── Obstacle.gd
-│   ├── network/ (Futuro)
-│   │   ├── Server.js
-│   │   ├── Client.gd
-│   │   └── GameState.gd
-│   └── utilities/
-│       ├── Config.gd
-│       └── Utils.gd
-├── assets/
-│   ├── sprites/
-│   ├── sounds/
-│   └── fonts/
-└── scenes/ (Godot) ou .html (Web)
-```
+- Renderiza o jogo
+- Lê input do teclado
+- Envia comandos ao servidor (movimento)
+- Recebe estado do servidor e renderiza
+- Interface de menu, UI, assets
+
+**Shared:**
+
+- Types e interfaces TypeScript (GameState, Snake, Fruit, etc)
+- Constantes (velocidades, tamanhos)
+- Configurações globais
+
+**Benefício:** Ambos cliente e servidor compartilham as mesmas definições de tipos, evitando bugs de sincronização.
 
 ## 🎨 Design de Mapa (Fase 1)
 

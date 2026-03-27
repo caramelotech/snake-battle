@@ -4,8 +4,6 @@
 
 Construir um jogo simples como ferramenta de aprendizado para desenvolvimento. Os projetos devem cobrir conceitos fundamentais de game development, physics, input handling, game loops, e mais.
 
----
-
 ## 🎮 Ideias por Nível de Complexidade
 
 ### Level 1: Bem Simples (Iniciante)
@@ -44,8 +42,6 @@ Construir um jogo simples como ferramenta de aprendizado para desenvolvimento. O
   - Difficulty progression
 - **Features iniciais**: Cobra se move, come comida, cresce, colisão mata
 - **Tempo estimado**: 3-5 dias
-
----
 
 ### Level 2: Intermediário
 
@@ -99,8 +95,6 @@ Construir um jogo simples como ferramenta de aprendizado para desenvolvimento. O
 - **Features iniciais**: Trocar peças, detectar matches, animar queda
 - **Tempo estimado**: 3-4 semanas
 
----
-
 ### Level 3: Mais Completo
 
 #### 8. **Shoot'em Up (2D Não-linear)**
@@ -143,8 +137,6 @@ Construir um jogo simples como ferramenta de aprendizado para desenvolvimento. O
 - **Features iniciais**: Explorar mapa, inimigos simples, coleta itens, sair do mapa
 - **Tempo estimado**: 4-5 semanas
 
----
-
 ## 📊 Matriz de Decisão
 
 | Jogo          | Complexidade | Duração | Plataforma | Melhor Para      |
@@ -157,8 +149,6 @@ Construir um jogo simples como ferramenta de aprendizado para desenvolvimento. O
 | Match 3       | Média-Alta   | 3-4w    | Web/Unity  | Algoritmos       |
 | Shoot'em Up   | Média        | 3-4w    | Unity      | Game loops       |
 
----
-
 ## 🛠 Tech Stack Recomendado
 
 ### Web
@@ -170,8 +160,6 @@ Construir um jogo simples como ferramenta de aprendizado para desenvolvimento. O
 
 - **Unity 2D**: Plataforma, Shoot'em Up, Roguelike
 - **Godot**: Alternativa open-source (melhor para iniciantes por ser mais leve)
-
----
 
 ## 📝 Próximos Passos
 
