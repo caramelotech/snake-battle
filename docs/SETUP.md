@@ -32,26 +32,51 @@ npm run dev
 # - Cliente:  http://localhost:5173
 ```
 
-### 4️⃣ Estrutura de Pastas Criada
+### 📁 Estrutura do Projeto
 
 ```
-✅ src/
-   ├── server/          (Express + Socket.io backend)
-   ├── client/          (Phaser 3 frontend)
-   ├── shared/          (Tipos e constantes compartilhadas)
-   └── assets/          (Sprites, sounds, fonts)
-✅ public/
-   └── index.html       (HTML entry point)
-✅ dist/                (Build output - ignored no git)
-✅ docs/
-   └── snake-battle.md  (Game design doc completo)
-✅ Configuração
-   ├── package.json     (Dependências)
-   ├── tsconfig.json    (TypeScript config)
-   ├── vite.config.ts   (Vite config)
-   ├── .env.example     (Environment variables)
-   ├── .gitignore
-   └── README.md        (Documentação)
+snake-battle/
+├── src/
+│   ├── server/              # Backend Express + Socket.io
+│   │   ├── routes/          # Rotas REST
+│   │   ├── websocket/       # Game Server logic
+│   │   ├── controllers/      # Lógica de controle
+│   │   ├── models/          # Data models
+│   │   ├── middleware/      # Middlewares
+│   │   ├── types/           # Types TypeScript
+│   │   └── server.ts        # Entrypoint
+│   │
+│   ├── client/              # Frontend Phaser 3
+│   │   ├── scenes/          # Cenas do jogo
+│   │   ├── objects/         # Classes de game objects
+│   │   ├── network/         # Socket.io client
+│   │   ├── types/           # Types do cliente
+│   │   ├── index.ts         # Entrypoint
+│   │   └── config.ts        # Configurações
+│   │
+│   ├── shared/              # Código compartilhado
+│   │   ├── types.ts         # Tipos compartilhados
+│   │   ├── constants.ts     # Constantes
+│   │   └── config.ts        # Config geral
+│   │
+│   └── assets/              # Assets do jogo
+│       ├── sprites/         # Imagens pixel art
+│       ├── sounds/          # Áudio (futura)
+│       └── fonts/           # Fontes (futura)
+│
+├── public/                  # Arquivos estáticos
+│   └── index.html          # HTML entry point
+│
+├── dist/                    # Build output
+├── docs/                    # Documentação
+│   └── snake-battle.md      # Game design doc completo
+│
+├── package.json
+├── tsconfig.json
+├── vite.config.ts
+├── .env.example
+├── .gitignore
+└── README.md
 ```
 
 ## 📦 Arquivos Criados

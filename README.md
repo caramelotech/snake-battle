@@ -1,4 +1,4 @@
-# Snake Battle - Game Development Plan
+# Snake Battle
 
 Este é o repositório do **Snake Battle**, um jogo multijogador competitivo baseado no clássico "Snake", desenvolvido com:
 
@@ -97,53 +97,6 @@ Isso vai:
 1. Compilar o TypeScript
 2. Fazer bundle do Phaser com Vite
 3. Servir o cliente via Express
-
-## 📁 Estrutura do Projeto
-
-```
-snake-battle/
-├── src/
-│   ├── server/              # Backend Express + Socket.io
-│   │   ├── routes/          # Rotas REST
-│   │   ├── websocket/       # Game Server logic
-│   │   ├── controllers/      # Lógica de controle
-│   │   ├── models/          # Data models
-│   │   ├── middleware/      # Middlewares
-│   │   ├── types/           # Types TypeScript
-│   │   └── server.ts        # Entrypoint
-│   │
-│   ├── client/              # Frontend Phaser 3
-│   │   ├── scenes/          # Cenas do jogo
-│   │   ├── objects/         # Classes de game objects
-│   │   ├── network/         # Socket.io client
-│   │   ├── types/           # Types do cliente
-│   │   ├── index.ts         # Entrypoint
-│   │   └── config.ts        # Configurações
-│   │
-│   ├── shared/              # Código compartilhado
-│   │   ├── types.ts         # Tipos compartilhados
-│   │   ├── constants.ts     # Constantes
-│   │   └── config.ts        # Config geral
-│   │
-│   └── assets/              # Assets do jogo
-│       ├── sprites/         # Imagens pixel art
-│       ├── sounds/          # Áudio (futura)
-│       └── fonts/           # Fontes (futura)
-│
-├── public/                  # Arquivos estáticos
-│   └── index.html          # HTML entry point
-│
-├── dist/                    # Build output
-├── docs/                    # Documentação
-│   └── snake-battle.md      # Game design doc completo
-│
-├── package.json
-├── tsconfig.json
-├── vite.config.ts
-├── .env.example
-├── .gitignore
-└── README.md
-```
 
 ## 🎮 Controles
 
@@ -284,16 +237,36 @@ Distribuído sob a Licença MIT. Veja `LICENSE` para mais informações.
 - [ ] **Fase 6:** Multiplayer Online & Deploy
 - [ ] **Fase 7+:** Expansões Contínuas
 
-## 👨‍💻 Autor
+## 👨‍💻 Autores
 
-Desenvolvido por: **@felurye**
-
-## 🙏 Agradecimentos
-
-- Phaser 3 Community
-- Socket.io
-- TypeScript
-- Inspiração do clássico Snake
+<table>
+  <tbody>
+    <tr>
+        <td align="center" valign="top" width="14.28%">
+            <a href="http://felurye.com.br"><img src="https://avatars.githubusercontent.com/u/37555137?v=4?s=100" width="100px;" alt="Daniele Araújo"/><br /><sub><b>Daniele Araújo</b></sub></a><br />
+            <a href="#code-felurye" title="Code">💻</a>
+            <a href="#documentation-felurye" title="Documentation">📖</a>
+            <a href="#ideas-felurye" title="Ideas, Planning & Feedback">🤔</a>
+        </td>
+        <td align="center" valign="top" width="14.28%">
+            <a href="https://www.linkedin.com/in/samantha-kellen/"><img src="https://avatars.githubusercontent.com/u/42253793?v=4?s=100" width="100px;" alt="Samantha Kellen"/><br /><sub><b>Samantha Kellen</b></sub></a><br />
+            <a href="#code-SamGomes52" title="Code">💻</a>
+            <a href="#example-SamGomes52" title="Examples">💡</a>
+            <a href="#ideas-SamGomes52" title="Ideas, Planning & Feedback">🤔</a>
+        </td>
+        <td align="center" valign="top" width="14.28%">
+            <a href="https://www.linkedin.com/in/natanael-ferreira-soares-46966a173/"><img src="https://avatars.githubusercontent.com/u/98434282?v=4?s=100" width="100px;" alt="Natanael Ferreira"/><br /><sub><b>Natanael Ferreira</b></sub></a><br />
+            <a href="#design-Zaethyr" title="Design">🎨</a>
+            <a href="#ideas-Zaethyr" title="Ideas, Planning & Feedback">🤔</a>
+            </td>
+        <td align="center" valign="top" width="14.28%">
+            <a href="https://www.artstation.com/vm21"><img src="https://cdnb.artstation.com/p/assets/images/images/038/971/369/large/vitor-moreira-1-effectsresult.jpg?1624568523?v=4?s=100" width="100px;" alt="Vitor Gonçalves"/><br /><sub><b>Vitor Gonçalves</b></sub></a><br />
+            <a href="#design-vitor" title="Design">🎨</a>
+            <a href="#ideas-vitor" title="Ideas, Planning & Feedback">🤔</a>
+        </td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
