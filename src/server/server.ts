@@ -26,10 +26,8 @@ const io = new SocketIOServer(httpServer, {
 app.use(cors(config.cors));
 app.use(express.json());
 
-// Servir arquivos estáticos do cliente
-const clientPath = path.join(process.cwd(), 'src/client');
-app.use(express.static(clientPath));
-app.use('/assets', express.static(path.join(process.cwd(), 'src/assets')));
+// Servir arquivos estáticos do cliente (build de produção)
+app.use(express.static(path.join(process.cwd(), 'dist/client')));
 
 // Rotas
 app.get('/api/health', (req, res) => {
@@ -48,8 +46,8 @@ app.get('/api/config', (req, res) => {
 });
 
 // Servir index.html para rotas não encontradas (SPA fallback)
-app.get('*', (req, res) => {
-  res.sendFile(path.join(process.cwd(), 'public/index.html'));
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(process.cwd(), 'dist/client/index.html'));
 });
 
 // WebSocket Events (Placeholder para Fase 1)

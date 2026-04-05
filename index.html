@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Snake Battle - Multiplayer Snake Game</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #1a1a1a;
+        color: #fff;
+        overflow: hidden;
+      }
+
+      #game {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      }
+
+      canvas {
+        border: 3px solid #00ff00;
+        box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+        display: block;
+      }
+
+      @media (max-width: 768px) {
+        canvas {
+          max-width: 100%;
+          height: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="game"></div>
+    <script type="module" src="/src/client/index.ts"></script>
+  </body>
+</html>
