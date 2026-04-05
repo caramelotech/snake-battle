@@ -57,8 +57,6 @@ Snake Battle e um projeto de portfolio desenvolvido por amigos nas horas livres 
 | 4    | Online, Skins e Ranking    | Multiplayer em rede, cosmeticos e leaderboard | Opcional     |
 | 5    | Pos-lancamento             | Evolucao com base em uso real                 | Se publicado |
 
----
-
 ## Fase 0: Fundacao e Single Player
 
 **Objetivo:** transformar o scaffold atual em uma base confiavel e entregar uma cobra solo jogavel com a identidade visual do projeto.
@@ -105,8 +103,6 @@ Snake Battle e um projeto de portfolio desenvolvido por amigos nas horas livres 
 - qualquer pessoa consegue abrir e jogar sem instrucao tecnica
 - nenhum bug critico de input, colisao ou travamento
 - a base tecnica suporta adicionar um segundo jogador sem reescrever o loop principal
-
----
 
 ## Fase 1: Multiplayer Local e Sistema de Dificuldades
 
@@ -159,8 +155,6 @@ Snake Battle e um projeto de portfolio desenvolvido por amigos nas horas livres 
 - dificuldades tem sensacao claramente diferente
 - a base de codigo suporta adicionar power-ups sem reescrever o loop
 
----
-
 ## Fase 2: Poderes Set 1 e Polish Visual
 
 **Objetivo:** adicionar profundidade tatica com os primeiros tres poderes e completar o visual do jogo para nivel apresentavel.
@@ -207,8 +201,6 @@ Todos ja modelados em `src/shared/types.ts` (`PowerUpType`) e `src/shared/consta
 - os poderes adicionam decisao real, nao apenas caos
 - jogadores entendem o efeito sem consultar documentacao
 - winrate por poder entre 45-55% em sessoes de teste
-
----
 
 ## Fase 3: Poderes Set 2 e Obstaculos
 
@@ -258,8 +250,6 @@ Todos ja modelados em `src/shared/types.ts` e `src/shared/constants.ts`:
 - obstaculos aumentam desafio sem criar estados impossiveis
 - partidas nao terminam por layout ruim ou spawn injusto
 - nenhum travamento ou comportamento inesperado de colisao com obstaculos
-
----
 
 ## Fase 4: Online, Skins e Ranking
 
@@ -329,8 +319,6 @@ Todos ja modelados em `src/shared/types.ts` e `src/shared/constants.ts`:
 - fluxo de skins funciona do inicio ao fim
 - deploy estavel para beta aberto
 
----
-
 ## Fase 5: Pos-lancamento
 
 **Objetivo:** evoluir o jogo com base em uso real e feedback de jogadores.
@@ -355,8 +343,6 @@ Todos ja modelados em `src/shared/types.ts` e `src/shared/constants.ts`:
 - backlog priorizado por impacto real
 - versoes incrementais com melhoria continua
 
----
-
 ## Checkpoints de Portfolio
 
 O projeto foi desenhado para ser apresentavel em qualquer uma das seguintes paradas:
@@ -371,8 +357,6 @@ O projeto foi desenhado para ser apresentavel em qualquer uma das seguintes para
 
 **Regra pratica:** nunca pare no meio de uma fase. Conclua o criterio de avanco antes de comecar a proxima.
 
----
-
 ## Dependencias Entre Design e Dev
 
 - Design precisa fechar wireframes e identidade visual antes do polish de UI (Fases 0-1).
@@ -381,8 +365,6 @@ O projeto foi desenhado para ser apresentavel em qualquer uma das seguintes para
 - Obstaculos precisam de layouts aprovados em design antes de geracao em dev.
 - Online so deve comecar depois que o jogo local na Fase 3 estiver confiavel.
 - Skins sao independentes do estado de jogo e podem ser desenvolvidas em paralelo na Fase 4.
-
----
 
 ## Sugestao de Ritmo para Fins de Semana
 
@@ -414,8 +396,6 @@ O projeto foi desenhado para ser apresentavel em qualquer uma das seguintes para
 | Fase 2 | Media-alta   | 3-4 fins de semana                  |
 | Fase 3 | Alta         | 3-4 fins de semana                  |
 | Fase 4 | Muito alta   | 6-10 fins de semana ou mais         |
-
----
 
 ## Proxima Prioridade Recomendada
 
