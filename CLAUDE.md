@@ -1,44 +1,31 @@
-# 🤖 Claude Project Guidelines - Snake Battle
+# Claude Project Guidelines - Snake Battle
 
 This document provides context and standards for Claude (or other AI assistants) to understand the Snake Battle project and maintain consistency when assisting with development.
 
-## 📋 Table of Contents
+## Project Overview
 
-1. [Project Overview](#project-overview)
-2. [Technology Stack](#technology-stack)
-3. [Architecture](#architecture)
-4. [Code Standards](#code-standards)
-5. [File Organization](#file-organization)
-6. [Development Workflow](#development-workflow)
-7. [Common Patterns](#common-patterns)
-8. [Guidelines for AI Assistance](#guidelines-for-ai-assistance)
+**Snake Battle** is a browser-based competitive snake game built with Phaser 3, Express.js, and Socket.io.
 
----
-
-## 📌 Project Overview
-
-**Snake Battle** is a browser-based multiplayer snake game built with Phaser 3, Express.js, and Socket.io.
+**Context:** Portfolio project developed by friends in spare time (weekends and after work). No commercial pressure. Each phase is designed to be a standalone, presentable milestone.
 
 ### Vision
 
-Create a fast-paced, competitive snake game where two players compete locally or online, with power-ups, obstacles, and multiple difficulty levels.
+A fast-paced competitive snake game where players compete locally or online, with power-ups, obstacles, and multiple difficulty levels.
 
 ### Game Mechanics
 
-- **2 Players** compete simultaneously on same board
-- **Snake Controls**: Player 1 uses WASD, Player 2 uses Arrow Keys
+- **Modes**: Solo (Player vs self) or Local 2-Player (same keyboard)
+- **Controls**: Player 1 uses WASD, Player 2 uses Arrow Keys, P to pause
 - **Objective**: Collect fruits to grow, last player alive wins
-- **Power-ups**: Shield, Speed Boost, Freeze Enemy, Ghost Mode, Size Reduction
-- **Obstacles**: Appear in higher difficulties
-- **Difficulty Levels**: Easy, Normal, Hard, Extreme
+- **Power-ups**: Speed Boost, Invisibility, Speed Reversal, Slice, Invert Controls, Petrify
+- **Obstacles**: Static and moving blocks in Hard and Insane difficulty
+- **Difficulty Levels**: Easy, Normal, Hard, Insane
 
 ### Current Phase
 
-**Phase 1: MVP** - Local multiplayer support with core gameplay
+**Phase 0** - Technical foundation + solo player snake playable
 
----
-
-## 🛠️ Technology Stack
+## Technology Stack
 
 ### Frontend
 
@@ -69,15 +56,7 @@ Create a fast-paced, competitive snake game where two players compete locally or
 - **File Watching**: nodemon 2.0+
 - **TypeScript Execution**: tsx 3.14+
 
-### DevOps
-
-- **Environment**: .env.example (dotenv)
-- **Version Control**: Git
-- **CI/CD**: GitHub Actions (planned)
-
----
-
-## 🏗️ Architecture
+## Architecture
 
 ### Monorepo Structure
 
@@ -99,12 +78,10 @@ All imports use TypeScript path aliases (defined in `tsconfig.json`):
 - `@shared/*` → `src/shared/*`
 - `@/*` → `src/*`
 
-**Usage:**
-
 ```typescript
 import { GameState } from "@shared/types";
 import { SocketClient } from "@client/network/SocketClient";
-import { config } from "@server/server";
+import { config } from "@server/config";
 ```
 
 ### Module Resolution
@@ -114,144 +91,103 @@ import { config } from "@server/server";
 - Vite handles client bundling
 - tsx handles server TypeScript execution
 
----
-
-## 📐 Code Standards
+## Code Standards
 
 ### TypeScript Guidelines
 
-#### Type Safety
-
 ```typescript
-// ✅ ALWAYS use explicit types
+// Always use explicit types
 function calculateScore(points: number): number {
   return points * 10;
 }
 
-// ❌ AVOID using 'any' unless absolutely necessary
-function calculateScore(points: any) {
-  return points * 10;
-}
-```
-
-#### Interfaces vs Types
-
-```typescript
-// ✅ Use interfaces for contracts/structs
+// Interfaces for contracts/structs
 interface Player {
   id: string;
   name: string;
   score: number;
 }
 
-// ✅ Use types for unions, primitives
-type GameMode = "local" | "online";
-type Difficulty = "easy" | "normal" | "hard" | "extreme";
-```
+// Types for unions and primitives
+type GameMode = "solo" | "local" | "online";
+type DifficultyLevel = "EASY" | "NORMAL" | "HARD" | "INSANE";
 
-#### Null Safety
-
-```typescript
-// ✅ Use strict null checking (enforced via tsconfig)
-const score: number | null = null;
-if (score !== null) {
-  console.log(score);
-}
-
-// ✅ Use optional chaining & nullish coalescing
+// Strict null checking - use optional chaining and nullish coalescing
 const health = player?.health ?? 100;
 ```
 
+Avoid `any` without an explanatory comment. Prefer `unknown` when the type is truly unknown.
+
 ### Naming Conventions
 
-| Category  | Format                   | Example                                    |
-| --------- | ------------------------ | ------------------------------------------ |
-| Classes   | PascalCase               | `SnakeObject`, `MenuScene`, `SocketClient` |
-| Functions | camelCase                | `handleInput()`, `calculateCollision()`    |
-| Constants | UPPER_SNAKE_CASE         | `GRID_WIDTH`, `PLAYER_SPEED`, `MAX_SNAKES` |
-| Variables | camelCase                | `isGameRunning`, `playerCount`             |
-| Booleans  | `is*` or `has*`          | `isAlive`, `hasCollected`, `shouldRender`  |
-| Files     | kebab-case or PascalCase | `socket-client.ts` or `SocketClient.ts`    |
-| Exports   | Match declaration        | `export class MenuScene {}`                |
+| Category  | Format           | Example                                    |
+| --------- | ---------------- | ------------------------------------------ |
+| Classes   | PascalCase       | `SnakeObject`, `MenuScene`, `SocketClient` |
+| Functions | camelCase        | `handleInput()`, `calculateCollision()`    |
+| Constants | UPPER_SNAKE_CASE | `GRID_WIDTH`, `PLAYER_SPEED`               |
+| Variables | camelCase        | `isGameRunning`, `playerCount`             |
+| Booleans  | `is*` or `has*`  | `isAlive`, `hasCollected`, `shouldRender`  |
+| Files     | PascalCase       | `GameScene.ts`, `SocketClient.ts`          |
+| Enums     | UPPER_SNAKE_CASE | `Direction.UP`, `PowerUpType.SPEED_BOOST`  |
 
-### Comments & Documentation
+### Comments
 
 ```typescript
-// ✅ GOOD: Explain the "why"
-// Delaying fruit spawn prevents lag when game starts
-const FRUIT_SPAWN_DELAY = 500;
+// Good: explain the "why"
+// Delay prevents input ghost on scene transition
+const INPUT_BUFFER_MS = 100;
 
-// ✅ GOOD: Document complex logic
+// Good: JSDoc on public/exported functions
 /**
- * Calculates collision between snake head and game obstacles
- * @param snakeHead - Position of snake head
- * @param obstacles - Array of obstacle positions
- * @returns true if collision detected
+ * Checks if position is free of snakes, fruits and obstacles.
+ * Used to validate spawn points.
  */
-function checkCollision(snakeHead: Position, obstacles: Position[]): boolean {
-  // ...
-}
+function isPositionFree(pos: Position, state: GameState): boolean { ... }
 
-// ❌ BAD: Obvious comments
-// Increment count
-count++;
-
-// ❌ BAD: No JSDoc for public functions
-function importantLogic() {}
+// Bad: obvious comments
+count++; // increment count
 ```
 
 ### Error Handling
 
 ```typescript
-// ✅ Use try-catch for async operations
+// try-catch for async operations
 try {
-  const response = await fetch("/api/config");
-  const data = await response.json();
+  const data = await fetch("/api/config").then((r) => r.json());
   return data;
 } catch (error) {
   console.error("Failed to fetch config:", error);
   throw new Error("Configuration load failed");
 }
 
-// ✅ Validate inputs early
+// Validate inputs early
 function createPlayer(name: string): Player {
-  if (!name || name.trim().length === 0) {
-    throw new Error("Player name cannot be empty");
-  }
+  if (!name.trim()) throw new Error("Player name cannot be empty");
   return { id: generateId(), name, score: 0 };
 }
 ```
 
-### Performance Considerations
+### Performance
 
 ```typescript
-// ✅ Cache expensive calculations
+// Cache expensive calculations - do not compute in update()
 class GameScene extends Phaser.Scene {
-  private cachedBounds: Phaser.Geom.Rectangle;
+  private gridBounds: Phaser.Geom.Rectangle;
 
-  preload() {
-    this.cachedBounds = this.physics.world.bounds;
+  create(): void {
+    this.gridBounds = this.physics.world.bounds;
+  }
+
+  update(): void {
+    // use this.gridBounds, never recreate it here
   }
 }
 
-// ✅ Avoid creating objects in loops
-const snakes: Snake[] = [];
-for (const id of playerIds) {
-  snakes.push(new Snake(id)); // Object created once
-}
-
-// ❌ DON'T create objects repeatedly in render loop
-update(): void {
-  // DON'T do this - creates new object every frame!
-  const bounds = { x: 0, y: 0, width: 640, height: 640 };
-}
+// Avoid object creation inside game loop or render calls
+// Use object pooling for frequently created objects (particles, effects)
 ```
 
----
-
-## 📁 File Organization
-
-### Directory Structure
+## File Organization
 
 ```
 src/
@@ -260,93 +196,73 @@ src/
 │   ├── config.ts                     # Difficulty-specific configs
 │   ├── scenes/
 │   │   ├── MenuScene.ts             # Main menu
-│   │   ├── GameScene.ts             # Local multiplayer game
-│   │   └── GameOverScene.ts         # Game over screen
+│   │   ├── GameScene.ts             # Game loop (solo & local)
+│   │   └── GameOverScene.ts         # Result screen
 │   ├── objects/
 │   │   ├── Snake.ts                 # Snake game object
 │   │   ├── Fruit.ts                 # Fruit spawning
-│   │   └── PowerUp.ts               # Power-ups (Phase 2)
+│   │   └── PowerUp.ts               # Power-ups (Phase 2+)
 │   ├── network/
 │   │   └── SocketClient.ts          # WebSocket client wrapper
 │   ├── ui/
-│   │   └── ScoreBoard.ts            # UI components (Phase 3)
+│   │   └── ScoreBoard.ts            # HUD components (Phase 1+)
 │   └── types/
 │       └── index.ts                 # Client-specific types
 │
 ├── server/
 │   ├── server.ts                    # Express entry point
 │   ├── websocket/
-│   │   └── GameServer.ts            # WebSocket game logic
+│   │   └── GameServer.ts            # WebSocket game logic (Phase 4)
 │   ├── routes/
-│   │   ├── auth.ts                  # Authentication (Phase 5)
+│   │   ├── auth.ts                  # Authentication (Phase 4)
 │   │   ├── games.ts                 # Game endpoints
-│   │   └── leaderboard.ts           # Leaderboard endpoints
+│   │   └── leaderboard.ts           # Leaderboard (Phase 4)
 │   ├── models/
-│   │   ├── User.ts                  # User model
-│   │   ├── GameSession.ts           # Game session tracking
-│   │   └── Leaderboard.ts           # Leaderboard storage
-│   ├── controllers/
-│   │   └── ...                      # Request handlers (Phase 5+)
-│   ├── middleware/
-│   │   └── ...                      # Auth, logging (Phase 5+)
+│   │   ├── User.ts                  # User model (Phase 4)
+│   │   ├── GameSession.ts           # Session tracking (Phase 4)
+│   │   └── Leaderboard.ts           # Leaderboard storage (Phase 4)
 │   └── types/
 │       └── index.ts                 # Server-specific types
 │
 └── shared/
-    ├── types.ts                     # Shared game types
+    ├── types.ts                     # All shared game types and enums
     ├── constants.ts                 # Game balancing constants
     └── config.ts                    # Configuration management
 ```
 
-### One File Per Class
+One class per file. Each scene and game object gets its own file.
 
-- Each Phaser scene gets its own file
-- Each game object gets its own file
-- Utilities grouped in `utils/` or `helpers/`
-
-### Importing in Files
+### Import Order
 
 ```typescript
-// ✅ DO: Organize imports
-// External
+// 1. External packages
 import express from "express";
 import { Server as SocketIOServer } from "socket.io";
 
-// Shared
+// 2. Shared
 import { GameState, Player } from "@shared/types";
 import { GRID_WIDTH, TILE_SIZE } from "@shared/constants";
 
-// Internal
+// 3. Internal (same layer)
 import { MenuScene } from "@client/scenes/MenuScene";
-
-// ❌ DON'T: Mix import styles or disorder
-import x from "y";
-import SomeLocal from "./local";
-import { z } from "./another";
 ```
 
----
-
-## 🔄 Development Workflow
-
-### Running the Project
+## Development Workflow
 
 ```bash
 # Development (hot reload)
 npm run dev              # Both server & client
-npm run server:dev      # Server only
-npm run client:dev      # Client only
+npm run server:dev       # Server only
+npm run client:dev       # Client only
 
 # Code Quality
-npm run lint            # ESLint check
-npm run format          # Prettier formatting
-npm run lint -- --fix   # ESLint with auto-fix
+npm run lint             # ESLint check
+npm run lint -- --fix    # ESLint with auto-fix
+npm run format           # Prettier formatting
 
-# Building
-npm run build           # Full build
-npm run build:server    # Server build only
-npm run build:client    # Client build only
-npm run start           # Start production build
+# Build & Production
+npm run build            # Full build
+npm run start            # Start production build
 ```
 
 ### Git Workflow
@@ -354,262 +270,152 @@ npm run start           # Start production build
 **Branch Naming:**
 
 ```
-feature/short-description      # New features
-fix/short-description          # Bug fixes
-docs/short-description         # Documentation
-refactor/short-description     # Code refactoring
+feature/short-description
+fix/short-description
+docs/short-description
+refactor/short-description
 ```
 
 **Commit Messages (Conventional Commits):**
 
 ```
 feat(gamescene): implement collision detection
-fix(network): handle reconnection timeout
-docs: update contribution guidelines
+fix(snake): prevent 180-degree reversal on same tick
+docs: update development phases
 refactor(socket): simplify event handling
 ```
 
-### Development Cycle
+**Development Cycle:**
 
 1. Create branch from `main`
 2. Make atomic commits
 3. Run `npm run lint` and `npm run format`
 4. Test with `npm run dev`
 5. Create PR with description
-6. Address review feedback
-7. Merge when approved
+6. Merge when reviewed
 
----
+## Common Patterns
 
-## 🎯 Common Patterns
-
-### Phaser Scene Pattern
+### Phaser Scene
 
 ```typescript
 export class GameScene extends Phaser.Scene {
   private snakes: Map<string, Snake> = new Map();
   private fruits: Fruit[] = [];
-  private isRunning: boolean = false;
+  private isRunning = false;
 
   constructor() {
     super({ key: "GameScene" });
   }
 
   create(): void {
-    // Initialize scene
     this.isRunning = true;
-    this.createSnakes();
-    this.createFruits();
     this.setupInput();
+    this.spawnInitialFruits();
   }
 
-  update(time: number, delta: number): void {
+  update(_time: number, _delta: number): void {
     if (!this.isRunning) return;
-    // Game loop logic
+    // tick-based logic is handled by a timer, not update()
   }
 
-  private setupInput(): void {
-    // Input handling
-  }
+  private setupInput(): void { ... }
 }
 ```
 
-### Game Object Pattern
+### Game Object
 
 ```typescript
 export class Snake extends Phaser.GameObjects.Container {
   private segments: SnakeSegment[] = [];
-  private direction: Direction = "RIGHT";
-  private nextDirection: Direction = "RIGHT";
+  private direction: Direction = Direction.RIGHT;
+  private nextDirection: Direction = Direction.RIGHT;
 
   constructor(scene: Phaser.Scene, x: number, y: number, id: string) {
     super(scene, x, y);
     this.initialize(id);
   }
 
-  private initialize(id: string): void {
-    // Setup snake segments
-  }
-
-  move(): void {
-    // Movement logic
-  }
-
-  grow(): void {
-    // Add segment
-  }
+  move(): void { ... }
+  grow(): void { ... }
 
   setDirection(direction: Direction): void {
-    this.nextDirection = direction;
-  }
-}
-```
-
-### Socket.io Pattern
-
-```typescript
-export class SocketClient {
-  private socket: Socket | null = null;
-  private reconnectAttempts = 0;
-  private maxReconnectAttempts = 5;
-
-  async connect(): Promise<void> {
-    try {
-      this.socket = io(this.getServerUrl(), {
-        reconnection: true,
-        reconnectionDelay: 1000,
-        reconnectionDelayMax: 5000,
-        reconnectionAttempts: this.maxReconnectAttempts,
-      });
-
-      return new Promise((resolve, reject) => {
-        const timeout = setTimeout(() => {
-          reject(new Error("Connection timeout"));
-        }, 5000);
-
-        this.socket!.on("connect", () => {
-          clearTimeout(timeout);
-          resolve();
-        });
-      });
-    } catch (error) {
-      throw new Error(`Failed to connect: ${error}`);
-    }
-  }
-
-  emit<T>(event: string, data: T): void {
-    if (!this.socket?.connected) {
-      console.warn(`Socket not connected, cannot emit: ${event}`);
-      return;
-    }
-    this.socket.emit(event, data);
-  }
-
-  on<T>(event: string, callback: (data: T) => void): void {
-    if (this.socket) {
-      this.socket.on(event, callback);
+    // Prevent 180-degree reversal
+    if (!isOpposite(direction, this.direction)) {
+      this.nextDirection = direction;
     }
   }
 }
 ```
 
-### Express Route Pattern
+## Guidelines for AI Assistance
 
-```typescript
-import express, { Router } from "express";
-import { GameState } from "@shared/types";
+### Architecture Decisions
 
-const router = Router();
+- **Shared types and constants**: always in `src/shared/`, never duplicated client/server
+- **Game state authority**: server is authoritative in online mode; client simulates locally in offline mode
+- **Path aliases required**: never use relative paths across layers (`../../shared/` is wrong)
+- **One concern per file**: scenes handle rendering, objects handle state, network handles communication
 
-// GET /api/games/active
-router.get("/active", (req, res) => {
-  try {
-    const games = getActiveGames();
-    res.json({ success: true, data: games });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: "Failed to fetch games",
-    });
-  }
-});
+### When Writing Code
 
-// POST /api/games
-router.post("/", (req, res) => {
-  try {
-    const { difficulty } = req.body;
-    const gameId = createGame(difficulty);
-    res.status(201).json({ success: true, gameId });
-  } catch (error) {
-    res.status(400).json({
-      success: false,
-      error: "Invalid game parameters",
-    });
-  }
-});
+- Use existing types from `src/shared/types.ts` before creating new ones
+- Reference constants from `src/shared/constants.ts` instead of hardcoding values
+- Follow the patterns in existing files (e.g., `SocketClient.ts` for network, `config.ts` for difficulty)
+- Do not add online/server features to files that currently handle offline gameplay only
 
-export default router;
-```
+### Priorities
 
----
-
-## 🤖 Guidelines for AI Assistance
-
-### When Helping with Code
-
-1. **Respect Project Structure**
-
-   - Follow the monorepo pattern
-   - Use path aliases (`@shared/*`, `@client/*`, `@server/*`)
-   - One class per file
-   - Group related utilities
-
-2. **Maintain Consistency**
-
-   - Use existing patterns as reference
-   - Follow naming conventions
-   - Match code style in the file
-   - Use TypeScript strictly (no `any`)
-
-3. **Consider Architecture**
-
-   - Shared types in `src/shared/types.ts`
-   - Constants in `src/shared/constants.ts`
-   - Don't duplicate logic between client/server
-   - Keep concerns separate (scenes, objects, network)
-
-4. **Performance Matters**
-
-   - Cache expensive calculations
-   - Avoid object creation in loops/render calls
-   - Use object pooling for frequently created objects
-   - Minimize socket.io event frequency
-
-5. **Error Handling**
-   - Always handle potential errors
-   - Provide meaningful error messages
-   - Use try-catch for async operations
-   - Validate inputs early
-
-### When Writing Documentation
-
-- Use clear, concise language
-- Provide code examples
-- Document the "why", not just the "what"
-- Include TypeScript examples when relevant
-- Link to related files/concepts
-
-### When Suggesting Changes
-
-- Explain the reasoning
-- Provide complete code
-- Reference existing patterns
-- Test recommendations locally first
-- Consider performance implications
-
-### What to Prioritize
-
-1. **Code Quality** > Quick fixes
-2. **Type Safety** > Runtime flexibility
-3. **Readability** > Brevity
-4. **Performance** > Simplicity (within reason)
-5. **Documentation** > Assumed knowledge
+1. **Type Safety** over runtime flexibility
+2. **Code Readability** over clever brevity
+3. **Existing patterns** over introducing new conventions
+4. **Performance awareness** in game loop code (avoid object creation per frame)
 
 ### What to Avoid
 
-- Using `any` types without // @ts-ignore comment
+- `any` type without an explanatory comment
 - Creating files outside the documented structure
-- Breaking existing patterns for "better" approaches
-- Performance optimizations without profiling
-- Changing established conventions without discussion
+- Adding online/Phase 4 scaffolding when working on Phase 0-3 gameplay
+- Hardcoding values that belong in `constants.ts`
+- Skipping null checks on player input or socket events
 
----
+## Shared Types Reference
 
-## 📋 Shared Types Reference
-
-Key types shared between client and server (in `src/shared/types.ts`):
+Key types in `src/shared/types.ts`. Read the file for the full picture.
 
 ```typescript
+// Enums
+enum Direction {
+  UP,
+  DOWN,
+  LEFT,
+  RIGHT,
+}
+enum FruitType {
+  APPLE,
+  GOLDEN,
+} // APPLE: +1 segment, GOLDEN: +2
+enum PowerUpType {
+  SPEED_BOOST,
+  INVISIBILITY,
+  SPEED_REVERSAL, // Phase 2
+  SLICE,
+  INVERT_CONTROLS,
+  PETRIFY, // Phase 3
+}
+enum ObstacleType {
+  STATIC,
+  MOVING,
+  PORTAL,
+}
+enum DifficultyLevel {
+  EASY,
+  NORMAL,
+  HARD,
+  INSANE,
+}
+
+// Core interfaces
 interface SnakeSegment {
   x: number;
   y: number;
@@ -617,15 +423,17 @@ interface SnakeSegment {
 
 interface Snake {
   id: string;
+  playerId: string;
   segments: SnakeSegment[];
   direction: Direction;
   color: string;
+  isAlive: boolean;
 }
 
 interface Fruit {
   x: number;
   y: number;
-  type: "standard" | "golden";
+  type: FruitType;
 }
 
 interface PowerUp {
@@ -634,82 +442,74 @@ interface PowerUp {
   x: number;
   y: number;
   duration: number;
+  isActive: boolean;
 }
 
-type Direction = "UP" | "DOWN" | "LEFT" | "RIGHT";
-type DifficultyLevel = "easy" | "normal" | "hard" | "extreme";
+interface GameState {
+  snakes: Snake[];
+  fruits: Fruit[];
+  powerUps: PowerUp[];
+  obstacles: Obstacle[];
+  scores: Record<string, number>;
+  tick: number;
+}
 ```
 
----
+## Game Constants Reference
 
-## 🎮 Game Constants Reference
-
-Key constants in `src/shared/constants.ts`:
+Key constants in `src/shared/constants.ts`. Read the file for full details.
 
 ```typescript
-export const GRID_WIDTH = 20;
-export const GRID_HEIGHT = 20;
-export const TILE_SIZE = 32;
+// Grid
+GRID_WIDTH = 20; // tiles
+GRID_HEIGHT = 20; // tiles
+TILE_SIZE = 32; // px per tile
+CANVAS_WIDTH = 640; // px (GRID_WIDTH * TILE_SIZE)
+CANVAS_HEIGHT = 640; // px
 
-export const CANVAS_WIDTH = GRID_WIDTH * TILE_SIZE; // 640px
-export const CANVAS_HEIGHT = GRID_HEIGHT * TILE_SIZE; // 640px
+// Snake starting positions
+P1_START = { x: 5, y: 10 };
+P2_START = { x: 15, y: 10 };
+INITIAL_LENGTH = 3;
 
-export const GAME_SPEEDS: Record<DifficultyLevel, number> = {
-  easy: 100,
-  normal: 120,
-  hard: 150,
-  extreme: 200,
-};
+// Tick speed (ms per move) - lower = faster
+GAME_SPEEDS = { EASY: 150, NORMAL: 100, HARD: 80, INSANE: 60 };
 
-export const POWER_UP_SPAWN_CHANCE = 0.15; // 15%
+// Fruits simultaneously on map
+FRUITS_COUNT = { EASY: 3, NORMAL: 2, HARD: 1, INSANE: 1 };
 
-export const FRUITS_COUNT: Record<DifficultyLevel, number> = {
-  easy: 3,
-  normal: 5,
-  hard: 7,
-  extreme: 10,
-};
+// Power-ups
+POWER_UP_SPAWN_CHANCE = 0.15; // 15% on fruit eaten
+// Individual durations and duration modifiers per difficulty
+// are in POWER_UP_DURATIONS and POWER_UP_DURATION_MODIFIERS
+
+// Obstacles (activated Phase 3+)
+OBSTACLE_COUNTS = { EASY: 0, NORMAL: 0, HARD: 8, INSANE: 17 };
+MOVING_OBSTACLE_COUNTS = { EASY: 0, NORMAL: 0, HARD: 0, INSANE: 2 };
+
+// Colors
+PLAYER_COLORS = { P1: "#00FF00", P2: "#FF00FF" };
 ```
 
----
+## Development Phases
 
-## 🚀 Development Phases
+See `docs/plano-de-desenvolvimento.md` for the full plan with deliverables and completion criteria.
 
-The project follows a structured 7-phase development plan:
+| Phase | Name                        | Focus                                       | Status   |
+| ----- | --------------------------- | ------------------------------------------- | -------- |
+| 0     | Foundation + Single Player  | Build pipeline, scenes, solo snake playable | Current  |
+| 1     | Local Multiplayer           | 2-player local, 4 difficulty levels         | Planned  |
+| 2     | Powers Set 1 + Polish       | Speed Boost, Invisibility, Speed Reversal   | Planned  |
+| 3     | Powers Set 2 + Obstacles    | Slice, Invert Controls, Petrify + obstacles | Planned  |
+| 4     | Online, Skins & Leaderboard | Multiplayer online, cosmetics, deploy       | Optional |
+| 5     | Post-launch                 | Iteration based on real usage               | If live  |
 
-| Phase | Name               | Duration | Focus                              |
-| ----- | ------------------ | -------- | ---------------------------------- |
-| 1     | MVP                | Week 1-2 | Local multiplayer, core gameplay   |
-| 2     | Power-ups          | Week 3   | 5 power-up mechanics               |
-| 3     | Obstacles          | Week 4   | Obstacle spawning & avoidance      |
-| 4     | Difficulty         | Week 5   | Difficulty system & balancing      |
-| 5     | Online             | Week 6-7 | Multiplayer over network           |
-| 6     | Auth & Leaderboard | Week 8   | Users, authentication, persistence |
-| 7     | Polish             | Week 9   | UI, sound, performance, release    |
+When making changes, consider which phase they support. Do not scaffold Phase 4+ features when working on Phase 0-3.
 
-When making changes, consider which phase they support.
+## References
 
----
-
-## 📚 References
-
-- **Main Specification**: `docs/snake-battle.md`
+- **Game Design Document**: `docs/snake-battle.md`
+- **Development Plan**: `docs/plano-de-desenvolvimento.md`
 - **Contribution Guide**: `.github/CONTRIBUTING.md`
 - **Pull Request Template**: `.github/pull_request_template.md`
-- **Project README**: `README.md`
-- **Setup Guide**: `SETUP.md`
-
----
-
-## ✨ Summary
-
-When assisting with Snake Battle:
-
-1. **Know the context**: It's a Phaser 3 snake game, TypeScript monorepo, two players competing
-2. **Follow patterns**: Use existing code as reference
-3. **Respect structure**: File organization matters, path aliases required
-4. **Prioritize quality**: Type safety, performance, readability
-5. **Document intent**: Explain the "why" in comments and PRs
-6. **Test locally**: Always verify changes work before suggesting
-
-Thank you for helping make Snake Battle better! 🎮
+- **Setup Guide**: `docs/SETUP.md`

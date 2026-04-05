@@ -79,7 +79,7 @@ snake-battle/
 └── README.md
 ```
 
-## 📦 Arquivos Criados
+## 📦 Arquivos
 
 ### Configuração do Projeto
 
@@ -87,47 +87,43 @@ snake-battle/
 - ✅ `tsconfig.json` - Configuração TypeScript
 - ✅ `vite.config.ts` - Configuração build tool
 - ✅ `.env.example` - Variáveis de ambiente
-- ✅ `.gitignore` - Arquivos ignorados no git
+- ✅ `.gitignore`
 
 ### Frontend (Phaser 3)
 
 - ✅ `public/index.html` - HTML entry point
 - ✅ `src/client/index.ts` - Game initialization
 - ✅ `src/client/config.ts` - Game configs por dificuldade
-- ✅ `src/client/network/SocketClient.ts` - Socket.io client
-- ✅ `src/client/types/index.ts` - TypeScript types
-- 📂 `src/client/scenes/` - Será preenchido na Fase 1
-- 📂 `src/client/objects/` - Será preenchido na Fase 1
+- ✅ `src/client/network/SocketClient.ts`
+- ✅ `src/client/types/index.ts`
+- 📂 `src/client/scenes/`
+- 📂 `src/client/objects/`
 
 ### Backend (Express + Socket.io)
 
 - ✅ `src/server/server.ts` - Servidor principal
-- ✅ `src/server/types/index.ts` - Server types
+- ✅ `src/server/types/index.ts`
 - 📂 `src/server/routes/` - auth.ts, games.ts, leaderboard.ts (placeholders)
 - 📂 `src/server/models/` - User.ts, GameSession.ts, Leaderboard.ts (placeholders)
-- 📂 `src/server/websocket/` - GameServer.ts (vazio - Fase 1)
-- 📂 `src/server/controllers/` - (vazio - Fase 6)
-- 📂 `src/server/middleware/` - (vazio - Fase 6)
+- 📂 `src/server/websocket/` - GameServer.ts
+- 📂 `src/server/controllers/`
+- 📂 `src/server/middleware/`
 
 ### Código Compartilhado
 
-- ✅ `src/shared/types.ts` - Tipos compartilhados (completo)
-- ✅ `src/shared/constants.ts` - Constantes do jogo (completo)
-- ✅ `src/shared/config.ts` - Configurações gerais
+- ✅ `src/shared/types.ts`
+- ✅ `src/shared/constants.ts`
+- ✅ `src/shared/config.ts`
 
 ### Assets
 
-- 📂 `src/assets/sprites/` - (vazio - será preenchido com pixel art)
-- 📂 `src/assets/sounds/` - (vazio - será preenchido com áudio)
-- 📂 `src/assets/fonts/` - (vazio - será preenchido com fontes)
-
-### Documentação
-
-- ✅ `docs/snake-battle.md` - Game design document completo
-- ✅ `README.md` - Documentação do projeto
-- ✅ `SETUP.md` - Este arquivo
+- 📂 `src/assets/sprites/`
+- 📂 `src/assets/sounds/`
+- 📂 `src/assets/fonts/`
 
 ## 🎯 Scripts Disponíveis
+
+**Workflow de Desenvolvimento**
 
 ```bash
 # Desenvolvimento
@@ -173,27 +169,6 @@ npm install
 
 Verifique se o `vite.config.ts` e `tsconfig.json` têm os paths configurados corretamente. Reinicie o dev server.
 
-## 📖 Próximos Passos
-
-### Fase 1: MVP (Semana 1-2)
-
-1. [ ] Implementar MenuScene (Phaser scene)
-2. [ ] Implementar GameScene (Phaser scene)
-3. [ ] Criar classe Snake
-4. [ ] Criar classe Fruit
-5. [ ] Implementar sistema de colisões
-6. [ ] Implementar controles (WASD + Setas)
-7. [ ] Implementar placar e UI básica
-8. [ ] Testar multiplayer local
-
-### Fase 2: Poderes (Semana 3)
-
-1. [ ] Criar classe PowerUp
-2. [ ] Implementar 3 primeiros poderes
-3. [ ] Adicionar efeitos visuais
-4. [ ] Adicionar áudio/música
-5. [ ] Implementar leaderboard local
-
 ## 📚 Documentação
 
 - **Plano Completo:** `docs/snake-battle.md`
@@ -210,12 +185,6 @@ Verifique se o `vite.config.ts` e `tsconfig.json` têm os paths configurados cor
 - ✅ **Socket.io Ready:** Real-time communication setup
 - ✅ **Phaser 3:** Game engine moderno
 - ✅ **ESLint + Prettier:** Code quality
-
-## 🎮 Status
-
-**Pronto para começar a Fase 1!** ✏️
-
-Todas as dependências estão configuradas e o servidor básico está pronto.
 
 ---
 

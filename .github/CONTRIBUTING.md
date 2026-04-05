@@ -48,9 +48,7 @@ Sugestões de melhorias são sempre bem-vindas! Para sugerir uma melhoria:
 ### Enviando PRs
 
 1. Fork o repositório e crie sua branch a partir de `main`
-2. Se você adicionou código que deve ser testado, adicione testes
-3. Garanta que o pacote de testes passa (`npm run test`)
-4. Garanta que seu código segue o style guide (`npm run lint`)
+2. Garanta que seu código segue o style guide (`npm run lint`)
 5. Envie seu Pull Request com um bom título e descrição
 
 ## 📍 Processo de Desenvolvimento
@@ -89,7 +87,6 @@ git checkout -b feature/implementar-menu-scene
 # Faça suas mudanças
 npm run dev        # Desenvolvimento
 npm run lint       # Verificar estilo
-npm run test       # Rodar testes (quando implementado)
 
 # Commit com mensagem clara
 git commit -m "feat: implementar menu scene com seleção de dificuldade"
@@ -242,7 +239,7 @@ Seus PRs podem ser revisados por:
 Se o review pedir mudanças:
 
 1. Faça os ajustes
-2. Force push para sua branch (não crie commits de merge)
+2. Crie um novo commit com as correções e dê push na branch
 3. Comente "Pronto para re-review"
 
 ## 🛠️ Setup Local
@@ -281,35 +278,37 @@ npm run dev
 ```bash
 npm run dev              # Dev server (hot reload)
 npm run build            # Build para produção
-npm run lint            # Verificar erros
-npm run format          # Formatar código
-npm run type-check      # Verificar tipos TypeScript
+npm run lint             # Verificar erros
+npm run lint -- --fix    # Corrigir erros automaticamente
+npm run format           # Formatar código
 
 # Desenvolvimento separado
-npm run server:dev      # Apenas servidor
-npm run client:dev      # Apenas cliente
+npm run server:dev       # Apenas servidor
+npm run client:dev       # Apenas cliente
 ```
 
 ## 📚 Recursos Úteis
 
-- **[Especificação do Jogo](../docs/snake-battle.md)** - Design completo
+- **[Especificação do Jogo](../docs/snake-battle.md)** - Design completo, mecânicas e poderes
+- **[Plano de Desenvolvimento](../docs/plano-de-desenvolvimento.md)** - Fases, entregáveis e checkpoints
 - **[README](../README.md)** - Overview do projeto
 - **[Tipos Compartilhados](../src/shared/types.ts)** - Estruturas principais
 - **[Constantes do Jogo](../src/shared/constants.ts)** - Balanceamento
 
 ## 🎯 Roadmap de Desenvolvimento
 
-O projeto segue fases de desenvolvimento:
+O projeto segue 6 fases progressivas, desenvolvidas aos fins de semana:
 
-- **Fase 1**: MVP - Multiplayer local (Semana 1-2)
-- **Fase 2**: Power-ups (Semana 3)
-- **Fase 3**: Obstáculos (Semana 4)
-- **Fase 4**: Dificuldades (Semana 5)
-- **Fase 5**: Multiplayer online (Semana 6-7)
-- **Fase 6**: Autenticação & Leaderboard (Semana 8)
-- **Fase 7**: Polish & Publicação (Semana 9)
+| Fase | Foco                                           |
+| ---- | ---------------------------------------------- |
+| 0    | Fundação técnica + cobra solo jogável          |
+| 1    | Multiplayer local + 4 dificuldades             |
+| 2    | Poderes set 1 (Speed Boost, Invisibilidade...) |
+| 3    | Poderes set 2 + obstáculos em Hard/Insane      |
+| 4    | Online, skins e leaderboard (opcional)         |
+| 5    | Pós-lançamento                                 |
 
-Veja [docs/snake-battle.md](../docs/snake-battle.md) para detalhes completos.
+Veja [docs/plano-de-desenvolvimento.md](../docs/plano-de-desenvolvimento.md) para entregáveis e critérios de conclusão de cada fase.
 
 ## ❓ Dúvidas?
 

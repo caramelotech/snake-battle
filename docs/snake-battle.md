@@ -1,25 +1,43 @@
-# Snake Battle
+# Snake Battle 🐍
 
 ## 📋 Visão Geral
 
-**Snake Battle** é uma versão moderna e competitiva do clássico jogo da cobrinha. O jogo mistura mecânicas tradicionais (comer frutas para crescer) com um foco em multiplayer local (e futuramente online), onde os jogadores competem não apenas pela pontuação, mas pela sobrevivência e pela dominação do mapa através de poderes especiais.
+**Snake Battle** é uma versão moderna e competitiva do clássico jogo da cobrinha. O jogo mistura mecânicas tradicionais (comer frutas para crescer) com um foco em multiplayer local e online, onde os jogadores competem não apenas pela pontuação, mas pela sobrevivência e pela dominação do mapa através de poderes especiais.
 
 **Conceito Principal:** Um jogo de estratégia e reflexo onde duas cobras lutam pela sobrevivência em um mapa fechado. O objetivo é comer frutas para crescer, evitar colisões (próprias e do inimigo) e usar poderes especiais para ganhar vantagem tática.
 
 ## 🎮 Especificações Principais
 
+### Características Principais (MVP - Fase 0)
+
+- **Local:** 1 jogador, jogo da cobrinha tradicinal, mas com o design novo
+- **Sistema de Frutas:** Collectibles que incrementam tamanho e pontuação
+- **Colisão Inteligente:** Cobras não podem se chocar com próprio corpo ou em paredes
+- **Sistema de Pontuação:** Pontos por frutas que aumentam o seu tamanho
+- **Estética Retro:** Visual pixel art 8-bit com cores vibrantes
+
 ### Características Principais (MVP - Fase 1)
 
-- **Multiplayer Local:** 2 jogadores no mesmo dispositivo
+- **Multiplayer Local:** pode ser escolhido jogo solo ou 2 jogadores no mesmo dispositivo
 - **Controles Independentes:** Cada cobra com seu próprio joystick/teclado
 - **Sistema de Frutas:** Collectibles que incrementam tamanho e pontuação
 - **Colisão Inteligente:** Cobras não podem se chocar com próprio corpo, do inimigo ou paredes
-- **Sistema de Pontuação:** Pontos por frutas comidas
-- **Estética Retro:** Visual pixel art 8-bit com cores vibrantes
+- **Sistema de Pontuação:** Pontos por frutas que aumentam o seu tamanho
 
-### Características Futuras
+### Características Principais (Fase 2)
 
-- **Multiplayer Online:** Conexão via rede (websockets/UDP)
+- **Multiplayer Local:** 2 jogadores no mesmo dispositivo
+- **Controles Independentes:** Cada cobra com seu próprio joystick/teclado
+- **Sistema de Frutas:** Collectibles que incrementam tamanho e pontuação,
+  além disso cada fruta tem carecteristicas especiais, que podem gerar vantagens no jogo.
+- **Colisão Inteligente:** Cobras não podem se chocar com próprio corpo, do inimigo ou paredes
+- **Sistema de niveis:** Jogo em loop ou em quantidade de partidas setadas inicialmente,
+  que geram mapas diferentes e incremeta dificuldades
+
+### Características Principais (Fase 3)
+
+- **Multiplayer Online:** Os dois outros modos de jogo permanecem, sendo eles solo ou local 2 jogadores,
+  mas agora com possibilidade de conexão via rede (websockets/UDP) para multiplos jogadores
 - **Sistema de Skins:** Customização visual das cobras
 - **Ranking Online:** Placar global de jogadores
 
@@ -35,16 +53,17 @@
    - Tocar no inimigo = Game Over
    - Tocar na parede = Game Over
 5. **Frutas:** Spawn aleatório no mapa (não em cima das cobras)
+   5.1. Cada fruta tem um poder especial, gerando efeitos positivos para quem consome
 
 ### Mapa
 
-- **Tamanho Base (Fase 1):** 20x20 tiles
+- **Tamanho Base (Fase 1):** 40x40 tiles
 - **Bordas:** Paredes delimitadas que causam colisão
 - **Zona Segura:** Sem obstáculos na fase inicial
 
 ## 🎮 Sistema de Controles
 
-### Multiplayer Local (Fase 1 - MVP)
+### Multiplayer Local
 
 **2 Jogadores Simultâneos:** Mesmo teclado, controles independentes
 
@@ -63,15 +82,9 @@
 - Prevenção de reverse (cobra não pode se virar 180° e colidir com si mesma no frame seguinte)
 - Suporta inputs simultâneos (ambas cobras podem se mover no mesmo frame)
 
-### Suporte Futuro (Fase 5+)
-
-- **Gamepad:** Xbox/PlayStation controller support
-- **Mobile:** Touch controls (arrows na tela)
-- **Customização:** Remap de controles em configurações
-
 ## ⚡ Sistema de Poderes (Power-ups)
 
-### Fase 1 (MVP)
+### Fase 0 e 1 (MVP)
 
 - **Nenhum poder** - Foco na mecânica base
 
@@ -81,6 +94,7 @@
   - Aumenta velocidade temporariamente (+50% por 8 segundos)
   - Spawn: 15% de chance ao comer uma fruta normal
 - **Estrela** (Invisibilidade Tática)
+
   - A cobra fica "invisível" para detecção de colisão por 5 segundos
   - Pode cruzar através do inimigo, mas não das paredes
   - Spawn: 10% de chance
@@ -93,11 +107,13 @@
 ### Fase 3
 
 - **Sabre** (Cortar Cobra Inimiga)
+
   - Remove os últimos 3 segmentos da cobra inimiga
   - Ativação instantânea ao pegar
   - Spawn: 8% de chance
 
 - **Caracol** (Inversão de Controles)
+
   - Inverte os controles do inimigo por 6 segundos (cima↔baixo, esquerda↔direita)
   - Spawn: 7% de chance
 
@@ -160,198 +176,6 @@
 - **Gaps (Buracos):** Áreas onde as cobras caem
 - **Obstáculos Interativos**
 
-## 📊 Plano de Desenvolvimento
-
-### **Fase 1: MVP - Jogo Base** (Semana 1-2)
-
-**Objetivo:** Criar o jogo funcional com 2 jogadores locais
-
-**Comentário:** Graças ao monorepo TypeScript unificado, toda a setup é mais rápida. Não precisa configurar 2 projetos separados.
-
-#### Tasks
-
-- [ ] Setup do projeto TypeScript monorepo
-  - Criar estrutura de pastas (src/server, src/client, src/shared)
-  - Configurar tsconfig.json
-  - Instalar dependências (Express, Phaser, Socket.io, Vite)
-  - Scripts npm (dev, build, start)
-- [ ] Criar servidor Express básico com Socket.io
-  - Servir arquivos estáticos (HTML do Phaser)
-  - Listeners de conexão websocket
-- [ ] Criar ClienteSocket para comunicação real-time (futura)
-- [ ] Implementar Game Scene (Phaser)
-  - Canvas do jogo 640x640
-  - Sistema de grid 20x20
-  - Renderização inicial
-- [ ] Implementar Snake.ts (classe principal)
-  - Movimento contínuo em direções
-  - Detectar input (WASD para P1, Setas para P2)
-  - Renderizar corpo (segmentos)
-- [ ] Implementar Fruit.ts
-  - Spawn aleatório no mapa
-  - Colisão com cobra
-  - Crescimento ao ser comido
-- [ ] Sistema de colisões
-  - Cobra vs corpo próprio
-  - Cobra vs cobra inimiga
-  - Cobra vs paredes
-- [ ] UI básica
-  - Placar em tempo real (pontos P1 e P2)
-  - Game Over com vencedor
-  - Pontos e tamanho da cobra
-- [ ] Menu Scene
-  - Botão "Iniciar Jogo"
-  - Selecionador de Dificuldade (Easy, Normal, Hard)
-- [ ] Testes locais e balanceamento
-  - Testar controles (input responsivo)
-  - Testar colisões (sem falsos positivos)
-  - Testar spawn de frutas (distribuição aleatória justa)
-
-#### Entregáveis
-
-- Build funcional do jogo (npm run build && npm run start)
-- 2 jogadores simultâneos no mesmo teclado
-- 3 níveis de dificuldade (Easy, Normal, Hard) balanceados
-- Nenhum bug crítico
-
-### **Fase 2: Poderes e Melhorias Visuais** (Semana 3)
-
-**Objetivo:** Adicionar profundidade tática com poderes
-
-#### Tasks
-
-- [ ] Sistema de poderes base
-  - Classe abstrata Power
-  - Sistema de spawn aleatório
-  - Visual feedback (partículas/animações)
-- [ ] Implementar 2 primeiros poderes (Speed Boost, Invisibility)
-- [ ] Efeitos visuais (pixel art)
-- [ ] Sons e música retro
-- [ ] Leaderboard local (top 10 por dificuldade)
-- [ ] Refatoração de código se necessário
-
-#### Entregáveis
-
-- Build v0.2 com poderes funcionais
-- Assets de áudio básicos
-
-### **Fase 3: Obstáculos e Novos Poderes** (Semana 4)
-
-**Objetivo:** Aumentar replayability e dificuldade
-
-#### Tasks
-
-- [ ] Sistema de geração procedural de obstáculos
-- [ ] Blocos estáticos inteligentes (sem bloquear tudo)
-- [ ] 3 novos poderes (Sabre, Caracol, Pedra)
-- [ ] Modos Hot Seat (turnos) opcional
-- [ ] Replay system (salvar partidas)
-- [ ] Balanceamento de winrate por dificuldade
-
-#### Entregáveis
-
-- Build v0.3 com obstáculos e 5 poderes totais
-- Sistema de replay funcional
-
-### **Fase 4: Sistema de Skins** (Semana 5-6)
-
-**Objetivo:** Customização visual e progression
-
-#### Tasks
-
-- [ ] Designer de skins (cores, padrões)
-- [ ] Sistema de unlocking de skins
-  - Achievement-based (ex: ganhar 10 vezes no Hard)
-  - Cosmético (não oferece vantagem)
-- [ ] Editor de skin in-game
-- [ ] Persistência (salvar preferências em localStorage/arquivo)
-- [ ] 5-10 skins pré-feitas
-
-#### Entregáveis
-
-- Build v0.4 com sistema de skins
-- 10+ skins disponíveis
-
-### **Fase 5: Preparação para Online** (Semana 6-7)
-
-**Objetivo:** Arquitetura de multiplayer online preparada
-
-**Comentário:** Como já estamos usando Socket.io desde o MVP, muita coisa já está pronta. Foco em separar lógica de game state, serialização e testar sincronização.
-
-#### Tasks
-
-- [ ] Implementar GameState.ts (classe centralizada)
-  - Posições das cobras
-  - Frutas no mapa
-  - Poderes ativos
-  - Placar
-- [ ] Implementar Game State Serialization
-  - Serializar estado para envio via Socket.io
-  - Deserializar no cliente
-- [ ] Implementar reconciliação de estado
-  - Cliente mantém cópia do estado
-  - Servidor é autoridade
-  - Rollback se necessário
-- [ ] Criar lobby de matchmaking básico
-  - Tela de espera de jogador
-  - Designar P1 e P2
-- [ ] Testes com latência simulada
-  - Usar Chrome DevTools para simular lag
-  - Testar sincronização com 100ms+
-- [ ] Mock de online multiplayer local
-  - Simulação de rede between clients
-
-#### Entregáveis
-
-- Código preparado para produção (nenhuma dependência de localStorage)
-- Lógica de game state centralizada
-- Sistema de sincronização testado
-- Build v0.5 com estrutura pronta para online
-
-### **Fase 6: Multiplayer Online & Deploy** (Semana 7-9)
-
-**Objetivo:** Jogo online em produção
-
-#### Tasks
-
-- [ ] Implementar autenticação com JWT
-  - Login/Register
-  - Persistir usuário no banco de dados (MongoDB ou PostgreSQL)
-- [ ] Implementar leaderboard online
-  - Salvar resultados após cada game
-  - Endpoints para rank global
-  - UI para mostrar top 10
-- [ ] Integrar persistência de dados
-  - Antes: localStorage (local)
-  - Agora: banco de dados no servidor
-  - Sincronizar skins desbloqueadas, preferências, stats
-- [ ] Setup de deployment
-  - Escolher plataforma (Render, Railway, Vercel, AWS)
-  - Configurar variáveis de ambiente (.env)
-  - Setup de banco de dados online (MongoDB Atlas ou PostGreSQL cloud)
-- [ ] Tests online
-  - Testar com múltiplos clientes reais
-  - Monitorar latência e performance
-  - Usar Sentry para error tracking
-- [ ] Documentação de deploy
-  - README com instruções de setup
-  - Guia de contribuição
-
-#### Entregáveis
-
-- Build v1.0 com multiplayer online
-- Servidor em produção (Railway, Render, etc)
-- Ranking global funcionando
-- ~100ms latência máxima de jogo
-
-### **Fase 7+: Expansões Contínuas**
-
-- Novos tipos de poderes
-- Modos de jogo alternativos (Battle Royale, 4 players online)
-- Mapas customizados
-- Tournaments/Seasons
-- Mobile version
-
 ## 🛠️ Stack Tecnológico Recomendado
 
 ### ⭐ Opção Escolhida: Full-Stack TypeScript (Monorepo Único)
@@ -373,143 +197,6 @@
 - **Real-time:** Socket.io (WebSocket)
 - **Build Tools:** Vite + esbuild (super rápido)
 - **Package Manager:** npm ou yarn
-
-**Dependências Principais:**
-
-```json
-{
-  "dependencies": {
-    "express": "^4.18.2",
-    "socket.io": "^4.5.4",
-    "socket.io-client": "^4.5.4",
-    "phaser": "^3.55.2",
-    "dotenv": "^16.0.3",
-    "cors": "^2.8.5"
-  },
-  "devDependencies": {
-    "typescript": "^5.0.0",
-    "vite": "^4.3.0",
-    "@vitejs/plugin-basic-ssl": "^1.0.0",
-    "ts-node": "^10.9.0",
-    "concurrently": "^8.0.0",
-    "nodemon": "^2.0.20",
-    "eslint": "^8.40.0",
-    "@typescript-eslint/parser": "^5.59.0",
-    "prettier": "^2.8.8"
-  }
-}
-```
-
-**Estrutura de Pasta:**
-
-```
-snake-battle/
-├── src/
-│   ├── server/
-│   │   ├── routes/
-│   │   │   ├── auth.ts
-│   │   │   ├── games.ts
-│   │   │   └── leaderboard.ts
-│   │   ├── models/
-│   │   │   ├── User.ts
-│   │   │   ├── GameSession.ts
-│   │   │   └── Leaderboard.ts
-│   │   ├── websocket/
-│   │   │   └── GameServer.ts
-│   │   ├── middleware/
-│   │   │   └── auth.ts
-│   │   ├── controllers/
-│   │   │   ├── gameController.ts
-│   │   │   └── userController.ts
-│   │   ├── types/
-│   │   │   └── index.ts
-│   │   └── server.ts (entrypoint)
-│   ├── client/
-│   │   ├── scenes/
-│   │   │   ├── MenuScene.ts
-│   │   │   ├── GameScene.ts
-│   │   │   └── GameOverScene.ts
-│   │   ├── objects/
-│   │   │   ├── Snake.ts
-│   │   │   ├── Fruit.ts
-│   │   │   ├── PowerUp.ts
-│   │   │   └── Obstacle.ts
-│   │   ├── network/
-│   │   │   └── SocketClient.ts
-│   │   ├── types/
-│   │   │   └── index.ts
-│   │   ├── index.ts (entrypoint)
-│   │   └── config.ts
-│   ├── shared/
-│   │   ├── types.ts (tipos compartilhados)
-│   │   ├── config.ts (configurações gerais)
-│   │   └── constants.ts
-│   └── assets/
-│       ├── sprites/
-│       ├── sounds/
-│       └── fonts/
-├── dist/
-│   ├── server/ (build do servidor)
-│   └── client/ (build do cliente - servido como static)
-├── public/
-│   └── index.html
-├── vite.config.ts
-├── tsconfig.json
-├── package.json
-├── .env.example
-├── .gitignore
-└── README.md
-```
-
-**Setup Inicial:**
-
-```bash
-# Criar projeto
-mkdir snake-battle && cd snake-battle
-
-# Inicializar npm
-npm init -y
-
-# Instalar dependências
-npm install express socket.io socket.io-client phaser dotenv cors
-npm install -D typescript vite ts-node concurrently nodemon eslint @typescript-eslint/parser prettier @vitejs/plugin-basic-ssl
-
-# Criar estrutura
-mkdir -p src/{server,client,shared} dist public
-
-# Criar arquivos TSConfig
-npx tsc --init
-```
-
-**Scripts npm (package.json):**
-
-```json
-{
-  "scripts": {
-    "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
-    "server:dev": "nodemon --exec ts-node src/server/server.ts",
-    "client:dev": "vite --host",
-    "build": "npm run build:client && npm run build:server",
-    "build:server": "tsc src/server --outDir dist/server",
-    "build:client": "vite build",
-    "start": "node dist/server/server.js",
-    "lint": "eslint src/**/*.ts",
-    "format": "prettier --write src/**/*.ts"
-  }
-}
-```
-
-**Workflow de Desenvolvimento:**
-
-```bash
-# Terminal único (graças ao concurrently)
-npm run dev
-
-# Vai rodar:
-# - Servidor Express em http://localhost:3000
-# - Vite dev server em http://localhost:5173
-# - Ambos com hot reload automático ao salvar arquivos
-```
 
 **Performance Esperada:**
 
@@ -533,8 +220,6 @@ npm run dev
 ✅ Deploy em um único comando  
 ✅ Mesma base de código para lógica de game  
 ✅ Debugging simplificado (um projeto Rails/Nest-like)
-
----
 
 ## 📐 Arquitetura de Código (TypeScript Full-Stack)
 
@@ -563,37 +248,9 @@ A arquitetura segue o padrão de separação entre Cliente (Phaser) e Servidor (
 
 **Benefício:** Ambos cliente e servidor compartilham as mesmas definições de tipos, evitando bugs de sincronização.
 
-## 🎨 Design de Mapa (Fase 1)
-
-```
-████████████████████
-█ 🐍               █
-█                  █
-█        🍎        █
-█                  █
-█              🐍  █
-█                  █
-█        ⭐        █
-█                  █
-████████████████████
-
-Grid: 20x20 tiles
-Tile Size: 32x32 pixels
-Resolution: 640x640px
-```
-
-## 📈 Roadmap Visual
-
-```
-MVP        → Poderes   → Obstáculos → Skins      → Online    → Expansões
-v0.1          v0.2        v0.3        v0.4        v0.5/v1.0   v1.x
-Semana 1-2  Semana 3   Semana 4    Semana 5-6  Semana 6-7  Contínuo
-                                                 Semana 7-9
-```
-
 ## 🎯 Métricas de Sucesso (Por Fase)
 
-### Fase 1
+### Fase 0 e 1
 
 - ✅ 2 jogadores jogando localmente sem bugs críticos
 - ✅ 3 diferentes níveis de dificuldade
@@ -638,11 +295,3 @@ Semana 1-2  Semana 3   Semana 4    Semana 5-6  Semana 6-7  Contínuo
 - **Iteração:** Estar aberto a cortar features que não funcionem
 - **Performance:** 60 FPS mínimo mesmo em 4 players online
 - **Accessibility:** Suportar diferentes layouts de teclado
-
-## 🚀 Como Começar
-
-1. **Semana 1:** Setup projeto + mechanics base
-2. **Semana 2:** Finalizar MVP, testar em amigos
-3. **Semana 3+:** Iterar baseado em feedback
-
-**Status Atual:** Pre-development ✏️
