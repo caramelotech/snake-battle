@@ -38,7 +38,12 @@ export class Snake {
   }
 
   setDirection(direction: Direction): void {
-    if (direction !== OPPOSITE_DIRECTION[this.direction]) {
+    // Check against nextDirection too to prevent queuing an opposite move
+    // (e.g. UP queued, player presses DOWN before move() fires)
+    if (
+      direction !== OPPOSITE_DIRECTION[this.direction] &&
+      direction !== OPPOSITE_DIRECTION[this.nextDirection]
+    ) {
       this.nextDirection = direction;
     }
   }
@@ -83,7 +88,7 @@ export class Snake {
   }
 
   getSegments(): SegmentPosition[] {
-    return this.segments;
+    return [...this.segments];
   }
 
   checkWallCollision(): boolean {

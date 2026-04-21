@@ -20,20 +20,7 @@ export class Fruit {
   readonly type: FruitType;
   private graphics: Phaser.GameObjects.Graphics;
 
-  constructor(scene: Phaser.Scene, occupied: GridPosition[], type: FruitType = FruitType.APPLE) {
-    this.type = type;
-    const pos = this.pickFreePosition(occupied);
-    this.x = pos.x;
-    this.y = pos.y;
-    this.graphics = scene.add.graphics();
-    this.draw();
-  }
-
-  destroy(): void {
-    this.graphics.destroy();
-  }
-
-  private pickFreePosition(occupied: GridPosition[]): GridPosition {
+  static findFreePosition(occupied: GridPosition[]): GridPosition | null {
     const free: GridPosition[] = [];
 
     for (let x = 0; x < GRID_WIDTH; x++) {
@@ -44,11 +31,21 @@ export class Fruit {
       }
     }
 
-    if (free.length === 0) {
-      return { x: 0, y: 0 };
-    }
+    if (free.length === 0) return null;
 
     return free[Math.floor(Math.random() * free.length)];
+  }
+
+  constructor(scene: Phaser.Scene, pos: GridPosition, type: FruitType = FruitType.APPLE) {
+    this.type = type;
+    this.x = pos.x;
+    this.y = pos.y;
+    this.graphics = scene.add.graphics();
+    this.draw();
+  }
+
+  destroy(): void {
+    this.graphics.destroy();
   }
 
   private draw(): void {

@@ -135,8 +135,10 @@ export class GameScene extends Phaser.Scene {
 
   private spawnFruit(): void {
     const occupied = [...this.snake.getSegments(), ...this.fruits.map((f) => ({ x: f.x, y: f.y }))];
+    const pos = Fruit.findFreePosition(occupied);
+    if (pos === null) return;
     const type = Math.random() < GOLDEN_FRUIT_CHANCE ? FruitType.GOLDEN : FruitType.APPLE;
-    this.fruits.push(new Fruit(this, occupied, type));
+    this.fruits.push(new Fruit(this, pos, type));
   }
 
   private endGame(): void {
