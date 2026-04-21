@@ -41,4 +41,18 @@ describe('Fruit.findFreePosition', () => {
     const pos = Fruit.findFreePosition(almostFull);
     expect(pos).toEqual(onlyFree);
   });
+
+  it('never spawns on a snake body segment', () => {
+    const snakeSegments = [
+      { x: 5, y: 10 },
+      { x: 4, y: 10 },
+      { x: 3, y: 10 },
+    ];
+    for (let i = 0; i < 100; i++) {
+      const pos = Fruit.findFreePosition(snakeSegments);
+      expect(pos).not.toBeNull();
+      const isOnSnake = snakeSegments.some((seg) => seg.x === pos!.x && seg.y === pos!.y);
+      expect(isOnSnake).toBe(false);
+    }
+  });
 });

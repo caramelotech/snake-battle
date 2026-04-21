@@ -14,6 +14,7 @@ import {
   INITIAL_SNAKE_LENGTH,
   GAME_SPEEDS,
   FRUITS_COUNT,
+  MAX_FRUITS,
   UI_COLORS,
   SNAKE_COLORS,
   FRUIT_POINTS,
@@ -134,6 +135,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private spawnFruit(): void {
+    if (this.fruits.length >= MAX_FRUITS) return;
     const occupied = [...this.snake.getSegments(), ...this.fruits.map((f) => ({ x: f.x, y: f.y }))];
     const pos = Fruit.findFreePosition(occupied);
     if (pos === null) return;

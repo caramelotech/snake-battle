@@ -17,8 +17,8 @@ const OPPOSITE_DIRECTION: Record<Direction, Direction> = {
 export class Snake {
   private segments: SegmentPosition[];
   private direction: Direction;
-  // One-slot FIFO buffer: accepts at most one pending direction per tick,
-  // preventing rapid key presses from overwriting each other.
+  // Two-slot FIFO buffer: lets players pre-queue one turn ahead without
+  // allowing unbounded growth from rapid key presses.
   private directionQueue: Direction[] = [];
   private graphics: Phaser.GameObjects.Graphics;
   private readonly color: number;
@@ -41,10 +41,9 @@ export class Snake {
   setDirection(direction: Direction): void {
     const lastQueued = this.directionQueue[this.directionQueue.length - 1] ?? this.direction;
     if (
-      direction !== OPPOSITE_DIRECTION[this.direction] &&
       direction !== OPPOSITE_DIRECTION[lastQueued] &&
       direction !== lastQueued &&
-      this.directionQueue.length < 1
+      this.directionQueue.length < 2
     ) {
       this.directionQueue.push(direction);
     }
@@ -107,6 +106,11 @@ export class Snake {
   checkSelfCollision(): boolean {
     const head = this.segments[0];
     return this.segments.slice(1).some((seg) => seg.x === head.x && seg.y === head.y);
+  }
+
+  checkBodyCollision(otherSegments: { x: number; y: number }[]): boolean {
+    const head = this.segments[0];
+    return otherSegments.some((seg) => seg.x === head.x && seg.y === head.y);
   }
 
   destroy(): void {

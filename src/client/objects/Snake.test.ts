@@ -128,7 +128,7 @@ describe('Snake direction queue', () => {
     expect(head).toEqual({ x: 6, y: 5 });
   });
 
-  it('preserves the first queued direction when a second key is pressed before the tick', () => {
+  it('rejects a direction opposite to the last queued entry', () => {
     const snake = new Snake(makeScene(), 5, 5, 1, 0);
     // Queue UP, then try to queue DOWN (opposite of UP) — DOWN must be rejected
     snake.setDirection(Direction.UP);
@@ -136,5 +136,53 @@ describe('Snake direction queue', () => {
     snake.move();
     const head = snake.getHead();
     expect(head).toEqual({ x: 5, y: 4 }); // moved UP, not DOWN
+  });
+
+  it('accepts two perpendicular directions pre-queued before any tick', () => {
+    const snake = new Snake(makeScene(), 5, 5, 1, 0);
+    // current direction: RIGHT — queue UP then LEFT (90° each)
+    snake.setDirection(Direction.UP);
+    snake.setDirection(Direction.LEFT);
+    snake.move(); // processes UP → head (5, 4)
+    snake.move(); // processes LEFT → head (4, 4)
+    expect(snake.getHead()).toEqual({ x: 4, y: 4 });
+  });
+
+  it('ignores a third direction when queue is full (2-slot limit)', () => {
+    const snake = new Snake(makeScene(), 5, 5, 1, 0);
+    // Fill both slots
+    snake.setDirection(Direction.UP);
+    snake.setDirection(Direction.LEFT);
+    // Attempt to add a third — should be ignored
+    snake.setDirection(Direction.DOWN);
+    snake.move(); // UP → (5, 4)
+    snake.move(); // LEFT → (4, 4)
+    expect(snake.getHead()).toEqual({ x: 4, y: 4 });
+  });
+});
+
+describe('Snake.checkBodyCollision', () => {
+  it('returns false when the head does not overlap any segment of the other snake', () => {
+    const snake = new Snake(makeScene(), 5, 5, 1, 0);
+    const otherSegments = [{ x: 1, y: 1 }, { x: 2, y: 1 }];
+    expect(snake.checkBodyCollision(otherSegments)).toBe(false);
+  });
+
+  it('returns true when the head overlaps the body of another snake', () => {
+    const snake = new Snake(makeScene(), 5, 5, 1, 0);
+    // Other snake occupies (5, 5), same as this snake's head
+    const otherSegments = [{ x: 9, y: 9 }, { x: 5, y: 5 }];
+    expect(snake.checkBodyCollision(otherSegments)).toBe(true);
+  });
+
+  it('returns true when the head overlaps the head of another snake (head-on collision)', () => {
+    const snake1 = new Snake(makeScene(), 5, 5, 1, 0);
+    const snake2 = new Snake(makeScene(), 5, 5, 1, 0);
+    expect(snake1.checkBodyCollision(snake2.getSegments())).toBe(true);
+  });
+
+  it('returns false when the other snake has no segments', () => {
+    const snake = new Snake(makeScene(), 5, 5, 1, 0);
+    expect(snake.checkBodyCollision([])).toBe(false);
   });
 });

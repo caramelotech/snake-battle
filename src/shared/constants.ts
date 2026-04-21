@@ -39,6 +39,9 @@ export const FRUITS_COUNT: { [key in DifficultyLevel]: number } = {
   [DifficultyLevel.INSANE]: 1,
 };
 
+export const MIN_FRUITS = 1;
+export const MAX_FRUITS = 4;
+
 // Spawn Rate de frutas (em ms)
 export const FRUIT_SPAWN_RATE: { [key in DifficultyLevel]: number } = {
   [DifficultyLevel.EASY]: 2000,
