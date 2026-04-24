@@ -14,6 +14,7 @@ import {
   INITIAL_SNAKE_LENGTH,
   GAME_SPEEDS,
   FRUITS_COUNT,
+  MIN_FRUITS,
   MAX_FRUITS,
   UI_COLORS,
   SNAKE_COLORS,
@@ -44,6 +45,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   create(): void {
+    this.fruits = [];
     this.cameras.main.setBackgroundColor(UI_COLORS.BACKGROUND);
     this.drawGrid();
 
@@ -56,7 +58,7 @@ export class GameScene extends Phaser.Scene {
       p1Color
     );
 
-    const initialFruits = FRUITS_COUNT[this.difficulty];
+    const initialFruits = Math.max(FRUITS_COUNT[this.difficulty], MIN_FRUITS);
     for (let i = 0; i < initialFruits; i++) {
       this.spawnFruit();
     }
