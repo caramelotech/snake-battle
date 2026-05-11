@@ -57,11 +57,28 @@ Snake Battle e um projeto de portfolio desenvolvido por amigos nas horas livres 
 | 4    | Online, Skins e Ranking    | Multiplayer em rede, cosmeticos e leaderboard | Opcional     |
 | 5    | Pos-lancamento             | Evolucao com base em uso real                 | Se publicado |
 
+## Estado Atual do Repositorio (2026-05-11)
+
+O projeto ja saiu do scaffold inicial e tem um loop solo funcional em Phaser:
+
+- `MenuScene`, `GameScene` e `GameOverScene` estao conectadas.
+- `Snake` tem movimento em grid, fila curta de direcao, crescimento e colisoes com parede/corpo.
+- `Fruit` tem spawn valido fora da cobra e suporte a maca comum/dourada.
+- `ScoreBoard` atualiza a pontuacao em tempo real.
+- A partida solo tem pausa com `P` e overlay de estado pausado.
+- O menu ja permite escolher dificuldade, afetando velocidade e quantidade inicial de frutas.
+- Existem testes unitarios para fila de direcao, colisoes, spawn de fruta e troca de dificuldade.
+- `npm run lint`, `npm test` e `npm run build` passam no estado atual.
+
+Com isso, a Fase 0 de **desenvolvimento** esta concluida. Ainda e recomendado fazer uma rodada humana de playtest e leitura visual antes de tratar o checkpoint como portfolio final.
+
 ## Fase 0: Fundacao e Single Player
 
 **Objetivo:** transformar o scaffold atual em uma base confiavel e entregar uma cobra solo jogavel com a identidade visual do projeto.
 
 > **Checkpoint de portfolio:** o projeto existe, sobe, tem visual proprio e e jogavel. Suficiente para apresentar como "trabalho em andamento" ou demonstracao de dominio de Phaser + TypeScript.
+
+**Status em 2026-05-11:** desenvolvimento concluido; pendente apenas de playtest humano e acabamento visual de checkpoint.
 
 ### Design
 
@@ -78,18 +95,23 @@ Snake Battle e um projeto de portfolio desenvolvido por amigos nas horas livres 
 
 ### Dev
 
-- Confirmar que build de producao e servidor de dev funcionam corretamente.
-- Criar e conectar as scenes do Phaser: `MenuScene`, `GameScene`, `GameOverScene`.
-- Implementar `Snake` com:
+- [x] Confirmar que build de producao funciona corretamente.
+- [x] Criar e conectar as scenes do Phaser: `MenuScene`, `GameScene`, `GameOverScene`.
+- [x] Implementar `Snake` com:
   - movimento em grid baseado em tick
   - fila de direcao (impede reversao instantanea)
   - crescimento ao comer fruta
-- Implementar `Fruit` com spawn valido (fora do corpo da cobra).
-- Implementar colisao: parede e corpo proprio.
-- Implementar placar em tempo real.
-- Implementar fluxo completo: menu -> partida -> game over -> reinicio.
-- Padronizar tipos em `src/shared/types.ts` e constantes em `src/shared/constants.ts`.
-- Configurar lint e format funcionando no repositorio.
+- [x] Implementar `Fruit` com spawn valido (fora do corpo da cobra).
+- [x] Implementar colisao: parede e corpo proprio.
+- [x] Implementar placar em tempo real.
+- [x] Implementar pausa com tecla `P`.
+- [x] Implementar fluxo completo: menu -> partida -> game over -> reinicio.
+- [x] Padronizar tipos em `src/shared/types.ts` e constantes em `src/shared/constants.ts`.
+- [x] Configurar lint, testes e build funcionando no repositorio.
+- [x] Alinhar documentacao de ambiente com Node 24 (`.nvmrc` e `package.json`).
+- [x] Validar que o servidor de producao responde apos `npm run build`.
+- [ ] Fazer playtest manual visual do fluxo completo em navegador.
+- [ ] Revisar leitura visual do HUD, grid, fruta e tela de game over.
 
 ### Entregaveis
 
@@ -399,16 +421,28 @@ O projeto foi desenhado para ser apresentavel em qualquer uma das seguintes para
 
 ## Proxima Prioridade Recomendada
 
-Pelo estado atual do repositorio (scaffold pronto, scenes e objects vazios), o foco ideal agora e:
+Pelo estado atual do repositorio, o desenvolvimento da Fase 0 esta fechado. O foco ideal agora e **fazer o playtest humano e a revisao visual do checkpoint** antes de abrir escopo de Fase 1.
 
-1. **Concluir a Fase 0** - cobra solo jogavel com visual aplicado
-2. **Entrar na Fase 1** - adicionar o segundo jogador e as dificuldades
+1. **Playtest da Fase 0**
+   - rodar `npm run dev`
+   - jogar algumas partidas em cada dificuldade
+   - validar input, colisao, crescimento, pontuacao, game over e restart
+   - anotar qualquer bug de sensacao ou leitura visual
 
-Isso significa priorizar agora:
+2. **Fechamento visual minimo**
+   - garantir que cobra, fruta, grid, score e game over estejam legiveis
+   - decidir se o visual atual ja serve como checkpoint ou se precisa de pequenos assets/polish
+   - manter o escopo pequeno: sem poderes, sem obstaculos e sem online
 
-- `MenuScene`, `GameScene`, `GameOverScene` no Phaser
-- `Snake` e `Fruit` como objetos de jogo
-- loop de tick, colisao e pontuacao
-- seletor de modo e dificuldade
+3. **Preparar entrada na Fase 1**
+   - extrair o que for necessario para suportar uma segunda cobra sem duplicar logica
+   - adaptar `ScoreBoard` para dois jogadores
+   - adicionar selecao de modo: solo / 2 jogadores
+   - implementar Player 2 com setas e colisoes cobra x cobra
 
-Antes de poderes, obstaculos e online.
+4. **Higiene antes da Fase 1**
+   - registrar achados do playtest manual
+   - transformar bugs encontrados em tarefas pequenas
+   - manter referencias antigas de documentacao alinhadas com o estado real do jogo
+
+Depois desse fechamento, a proxima fase natural e a **Fase 1: Multiplayer Local e Sistema de Dificuldades**. Poderes, obstaculos e online continuam fora do caminho critico por enquanto.

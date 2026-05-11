@@ -24,7 +24,7 @@ Este é o repositório do **Snake Battle**, um jogo multijogador competitivo bas
 
 ### Pré-requisitos
 
-- **Node.js** 18+ LTS ([download](https://nodejs.org))
+- **Node.js** 24+ ([download](https://nodejs.org))
 - **npm** 8+ ou **yarn** 3+
 - **Git**
 
@@ -105,7 +105,7 @@ Isso vai:
 | Backend     | Express    | 4.18+   |
 | Real-time   | Socket.io  | 4.5+    |
 | Build Tool  | Vite       | 4.3+    |
-| Runtime     | Node.js    | 18+ LTS |
+| Runtime     | Node.js    | 24+     |
 
 ## 🐛 Troubleshooting
 
@@ -134,9 +134,9 @@ Verifique se o servidor está rodando em `http://localhost:3000` e a variável `
 
 ## 🎯 Status Atual
 
-**Fase atual:** Fase 0 - Fundação e Single Player ✏️
+**Fase atual:** Fase 0 - Fundação e Single Player ✅
 
-- [ ] **Fase 0:** Fundação técnica + cobra solo jogável
+- [x] **Fase 0:** Fundação técnica + cobra solo jogável
 - [ ] **Fase 1:** Multiplayer local + 4 dificuldades
 - [ ] **Fase 2:** Poderes set 1 (Speed Boost, Invisibilidade, Speed Reversal) + polish visual
 - [ ] **Fase 3:** Poderes set 2 (Sabre, Caracol, Pedra) + obstáculos em Hard/Insane

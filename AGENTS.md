@@ -1,6 +1,6 @@
-# Claude Project Guidelines - Snake Battle
+# Codex Project Guidelines - Snake Battle
 
-This document provides context and standards for Claude (or other AI assistants) to understand the Snake Battle project and maintain consistency when assisting with development.
+This document provides context and standards for Codex (or other AI assistants) to understand the Snake Battle project and maintain consistency when assisting with development.
 
 ## Project Overview
 

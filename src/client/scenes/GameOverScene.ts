@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { DifficultyLevel } from '@shared/types';
 import { CANVAS_WIDTH, CANVAS_HEIGHT, UI_COLORS } from '@shared/constants';
+import { t, tDifficulty } from '@client/i18n';
 
 interface GameOverData {
   score: number;
@@ -24,7 +25,7 @@ export class GameOverScene extends Phaser.Scene {
     const cx = CANVAS_WIDTH / 2;
 
     this.add
-      .text(cx, CANVAS_HEIGHT / 2 - 160, 'GAME OVER', {
+      .text(cx, CANVAS_HEIGHT / 2 - 160, t('gameOver'), {
         fontSize: '52px',
         color: UI_COLORS.WARNING,
         fontFamily: 'monospace',
@@ -32,7 +33,7 @@ export class GameOverScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.add
-      .text(cx, CANVAS_HEIGHT / 2 - 60, `SCORE: ${this.gameOverData.score}`, {
+      .text(cx, CANVAS_HEIGHT / 2 - 60, `${t('score')}: ${this.gameOverData.score}`, {
         fontSize: '34px',
         color: UI_COLORS.TEXT,
         fontFamily: 'monospace',
@@ -40,15 +41,20 @@ export class GameOverScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.add
-      .text(cx, CANVAS_HEIGHT / 2 - 10, `DIFFICULTY: ${this.gameOverData.difficulty}`, {
-        fontSize: '16px',
-        color: '#888888',
-        fontFamily: 'monospace',
-      })
+      .text(
+        cx,
+        CANVAS_HEIGHT / 2 - 10,
+        `${t('difficultyDisplay')}: ${tDifficulty(this.gameOverData.difficulty)}`,
+        {
+          fontSize: '16px',
+          color: '#888888',
+          fontFamily: 'monospace',
+        }
+      )
       .setOrigin(0.5);
 
     const restartText = this.add
-      .text(cx, CANVAS_HEIGHT / 2 + 80, 'SPACE - Play Again', {
+      .text(cx, CANVAS_HEIGHT / 2 + 80, t('playAgain'), {
         fontSize: '22px',
         color: UI_COLORS.ACCENT,
         fontFamily: 'monospace',
@@ -56,7 +62,7 @@ export class GameOverScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.add
-      .text(cx, CANVAS_HEIGHT / 2 + 125, 'ESC - Main Menu', {
+      .text(cx, CANVAS_HEIGHT / 2 + 125, t('mainMenu'), {
         fontSize: '22px',
         color: UI_COLORS.TEXT,
         fontFamily: 'monospace',

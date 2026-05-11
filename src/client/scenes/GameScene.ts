@@ -3,6 +3,7 @@ import { Snake } from '@client/objects/Snake';
 import { Fruit } from '@client/objects/Fruit';
 import { ScoreBoard } from '@client/ui/ScoreBoard';
 import { Direction, DifficultyLevel, FruitType } from '@shared/types';
+import { t } from '@client/i18n';
 import {
   GRID_WIDTH,
   GRID_HEIGHT,
@@ -33,8 +34,11 @@ export class GameScene extends Phaser.Scene {
   private fruits: Fruit[] = [];
   private scoreBoard!: ScoreBoard;
   private tickTimer!: Phaser.Time.TimerEvent;
+  private pauseOverlay!: Phaser.GameObjects.Rectangle;
+  private pauseText!: Phaser.GameObjects.Text;
   private difficulty: DifficultyLevel = DifficultyLevel.NORMAL;
   private isRunning = false;
+  private isPaused = false;
 
   constructor() {
     super({ key: 'GameScene' });
@@ -46,6 +50,7 @@ export class GameScene extends Phaser.Scene {
 
   create(): void {
     this.fruits = [];
+    this.isPaused = false;
     this.cameras.main.setBackgroundColor(UI_COLORS.BACKGROUND);
     this.drawGrid();
 
@@ -64,6 +69,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.scoreBoard = new ScoreBoard(this, 8, 8);
+    this.createPauseOverlay();
     this.setupInput();
 
     this.tickTimer = this.time.addEvent({
@@ -74,6 +80,7 @@ export class GameScene extends Phaser.Scene {
     });
 
     this.isRunning = true;
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, this.cleanup, this);
   }
 
   update(): void {}
@@ -94,18 +101,19 @@ export class GameScene extends Phaser.Scene {
   private setupInput(): void {
     const kb = this.input.keyboard!;
 
-    kb.on('keydown-W', () => this.snake.setDirection(Direction.UP));
-    kb.on('keydown-S', () => this.snake.setDirection(Direction.DOWN));
-    kb.on('keydown-A', () => this.snake.setDirection(Direction.LEFT));
-    kb.on('keydown-D', () => this.snake.setDirection(Direction.RIGHT));
-    kb.on('keydown-UP', () => this.snake.setDirection(Direction.UP));
-    kb.on('keydown-DOWN', () => this.snake.setDirection(Direction.DOWN));
-    kb.on('keydown-LEFT', () => this.snake.setDirection(Direction.LEFT));
-    kb.on('keydown-RIGHT', () => this.snake.setDirection(Direction.RIGHT));
+    kb.on('keydown-W', () => this.queueDirection(Direction.UP));
+    kb.on('keydown-S', () => this.queueDirection(Direction.DOWN));
+    kb.on('keydown-A', () => this.queueDirection(Direction.LEFT));
+    kb.on('keydown-D', () => this.queueDirection(Direction.RIGHT));
+    kb.on('keydown-UP', () => this.queueDirection(Direction.UP));
+    kb.on('keydown-DOWN', () => this.queueDirection(Direction.DOWN));
+    kb.on('keydown-LEFT', () => this.queueDirection(Direction.LEFT));
+    kb.on('keydown-RIGHT', () => this.queueDirection(Direction.RIGHT));
+    kb.on('keydown-P', () => this.togglePause());
   }
 
   private onTick(): void {
-    if (!this.isRunning) return;
+    if (!this.isRunning || this.isPaused) return;
 
     this.snake.move();
 
@@ -157,5 +165,44 @@ export class GameScene extends Phaser.Scene {
         difficulty: this.difficulty,
       });
     });
+  }
+
+  private queueDirection(direction: Direction): void {
+    if (!this.isRunning || this.isPaused) return;
+    this.snake.setDirection(direction);
+  }
+
+  private togglePause(): void {
+    if (!this.isRunning) return;
+
+    this.isPaused = !this.isPaused;
+    this.pauseOverlay.setVisible(this.isPaused);
+    this.pauseText.setVisible(this.isPaused);
+  }
+
+  private createPauseOverlay(): void {
+    this.pauseOverlay = this.add
+      .rectangle(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 0x000000, 0.62)
+      .setOrigin(0)
+      .setDepth(20)
+      .setVisible(false);
+
+    this.pauseText = this.add
+      .text(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, t('paused'), {
+        fontSize: '44px',
+        color: UI_COLORS.TEXT,
+        fontFamily: 'monospace',
+      })
+      .setOrigin(0.5)
+      .setDepth(21)
+      .setVisible(false);
+  }
+
+  private cleanup(): void {
+    this.tickTimer?.remove(false);
+    this.snake?.destroy();
+    this.fruits.forEach((fruit) => fruit.destroy());
+    this.fruits = [];
+    this.scoreBoard?.destroy();
   }
 }

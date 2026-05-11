@@ -6,7 +6,7 @@ Guia rápido para começar a desenvolver Snake Battle.
 
 ### 1️⃣ Pré-requisitos
 
-- [ ] Node.js 18+ instalado (`node --version`)
+- [ ] Node.js 24+ instalado (`node --version`)
 - [ ] npm 8+ instalado (`npm --version`)
 - [ ] Git configurado (`git --version`)
 - [ ] Editor de texto (VS Code recomendado)

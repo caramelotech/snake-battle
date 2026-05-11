@@ -1,4 +1,4 @@
-# Ideias de Jogos - Joguinho o Retorno
+# Ideias de Jogos
 
 ## Objetivo
 
@@ -160,10 +160,3 @@ Construir um jogo simples como ferramenta de aprendizado para desenvolvimento. O
 
 - **Unity 2D**: Plataforma, Shoot'em Up, Roguelike
 - **Godot**: Alternativa open-source (melhor para iniciantes por ser mais leve)
-
-## 📝 Próximos Passos
-
-- [ ] Escolher o jogo para começar
-- [ ] Preparar o ambiente de desenvolvimento
-- [ ] Criar documento técnico/roadmap específico
-- [ ] Começar prototipagem
