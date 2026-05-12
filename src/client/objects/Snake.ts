@@ -19,14 +19,22 @@ export class Snake {
   private growPending = 0;
   isAlive = true;
 
-  constructor(scene: Phaser.Scene, startX: number, startY: number, length: number, color: number) {
+  constructor(
+    scene: Phaser.Scene,
+    startX: number,
+    startY: number,
+    length: number,
+    color: number,
+    initialDirection: Direction = Direction.RIGHT
+  ) {
     this.scene = scene;
     this.color = color;
-    this.direction = Direction.RIGHT;
+    this.direction = initialDirection;
     this.segments = [];
     for (let i = 0; i < length; i++) {
-      this.segments.push({ x: startX - i, y: startY });
-      this.segmentRects.push(this.makeRect(startX - i, startY, i === 0));
+      const segment = this.getInitialSegment(startX, startY, i);
+      this.segments.push(segment);
+      this.segmentRects.push(this.makeRect(segment.x, segment.y, i === 0));
     }
   }
 
@@ -130,5 +138,20 @@ export class Snake {
         this.color
       )
       .setAlpha(isHead ? 1 : 0.75);
+  }
+
+  private getInitialSegment(startX: number, startY: number, index: number): SegmentPosition {
+    switch (this.direction) {
+      case Direction.UP:
+        return { x: startX, y: startY + index };
+      case Direction.DOWN:
+        return { x: startX, y: startY - index };
+      case Direction.LEFT:
+        return { x: startX + index, y: startY };
+      case Direction.RIGHT:
+        return { x: startX - index, y: startY };
+      default:
+        throw new Error(`Unexpected direction: ${this.direction as string}`);
+    }
   }
 }

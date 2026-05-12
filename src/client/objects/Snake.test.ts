@@ -108,6 +108,15 @@ describe('Snake.checkSelfCollision', () => {
 });
 
 describe('Snake direction queue', () => {
+  it('spawns body segments behind a left-facing snake', () => {
+    const snake = new Snake(makeScene(), 15, 10, 3, 0, Direction.LEFT);
+    expect(snake.getSegments()).toEqual([
+      { x: 15, y: 10 },
+      { x: 16, y: 10 },
+      { x: 17, y: 10 },
+    ]);
+  });
+
   it('queues a valid direction and applies it on next move', () => {
     const snake = new Snake(makeScene(), 5, 5, 1, 0);
     // default direction is RIGHT; UP is perpendicular, so it should be accepted

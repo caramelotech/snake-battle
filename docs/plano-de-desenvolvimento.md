@@ -143,16 +143,16 @@ Com isso, a Fase 0 de **desenvolvimento** esta concluida. Ainda e recomendado fa
 
 ### Dev
 
-- Adicionar modo de 2 jogadores no mesmo teclado:
+- [x] Adicionar modo de 2 jogadores no mesmo teclado:
   - Player 1: WASD
   - Player 2: setas
-- Implementar colisao cobra x cobra.
-- Implementar seletor de modo de jogo (1P / 2P).
-- Implementar seletor de dificuldade com quatro niveis: Easy, Normal, Hard, Insane.
-- Conectar dificuldade aos parametros reais: velocidade, frutas simultaneas, spawn rate.
-- Implementar pausa compartilhada (tecla P).
-- Adicionar countdown de inicio e restart limpo.
-- Criar utilitarios de debug para colisao, spawn e velocidade.
+- [x] Implementar colisao cobra x cobra.
+- [x] Implementar seletor de modo de jogo (1P / 2P).
+- [x] Implementar seletor de dificuldade com quatro niveis: Easy, Normal, Hard, Insane.
+- [x] Conectar dificuldade aos parametros reais: velocidade e frutas simultaneas.
+- [x] Implementar pausa compartilhada (tecla P).
+- [ ] Adicionar countdown de inicio e restart limpo.
+- [ ] Criar utilitarios de debug para colisao, spawn e velocidade.
 
 ### Parametros de dificuldade (referencia de `constants.ts`)
 
@@ -446,3 +446,25 @@ Pelo estado atual do repositorio, o desenvolvimento da Fase 0 esta fechado. O fo
    - manter referencias antigas de documentacao alinhadas com o estado real do jogo
 
 Depois desse fechamento, a proxima fase natural e a **Fase 1: Multiplayer Local e Sistema de Dificuldades**. Poderes, obstaculos e online continuam fora do caminho critico por enquanto.
+
+## Atualizacao de Progresso da Fase 1 (2026-05-12)
+
+A Fase 1 foi iniciada com foco no menor incremento jogavel:
+
+- [x] Adicionar selecao de idioma no menu inicial.
+- [x] Configurar textos de interface em ingles e portugues.
+- [x] Adicionar seletor de modo no menu: solo / local 2 jogadores.
+- [x] Passar modo e dificuldade do menu para a partida.
+- [x] Criar segunda cobra para modo local.
+- [x] Separar controles: P1 usa WASD, P2 usa setas.
+- [x] Adaptar placar para um ou dois jogadores.
+- [x] Implementar colisao cobra x cobra e condicao de vencedor/empate.
+- [x] Exibir resultado da partida local na tela de game over.
+
+Proximas tasks recomendadas da Fase 1:
+
+1. Playtest manual do modo local com duas pessoas no mesmo teclado.
+2. Ajustar legibilidade do HUD para dois jogadores, se necessario.
+3. Adicionar countdown de inicio.
+4. Criar restart limpo com preservacao de modo e idioma.
+5. Criar utilitarios simples de debug para colisao, spawn e velocidade.

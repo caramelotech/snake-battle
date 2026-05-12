@@ -47,6 +47,11 @@ export enum DifficultyLevel {
   INSANE = 'INSANE',
 }
 
+export enum GameMode {
+  SOLO = 'SOLO',
+  LOCAL = 'LOCAL',
+}
+
 export interface Player {
   id: string;
   username: string;
