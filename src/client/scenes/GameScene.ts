@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { Snake } from '@client/objects/Snake';
-import { Fruit } from '@client/objects/Fruit';
+import { Fruit, FRUIT_ASSETS } from '@client/objects/Fruit';
 import { ScoreBoard } from '@client/ui/ScoreBoard';
 import { Direction, DifficultyLevel, FruitType, GameMode } from '@shared/types';
 import { t } from '@client/i18n';
@@ -53,6 +53,15 @@ export class GameScene extends Phaser.Scene {
 
   constructor() {
     super({ key: 'GameScene' });
+  }
+
+  preload(): void {
+    Object.entries(FRUIT_ASSETS).forEach(([key, path]) => {
+      this.load.image(
+        `fruit-${key.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}`,
+        path
+      );
+    });
   }
 
   init(data: GameSceneData): void {
@@ -118,7 +127,9 @@ export class GameScene extends Phaser.Scene {
     kb.on('keydown-S', () => this.queueDirection(Direction.DOWN));
     kb.on('keydown-A', () => this.queueDirection(Direction.LEFT));
     kb.on('keydown-D', () => this.queueDirection(Direction.RIGHT));
-    kb.on('keydown-UP', () => this.queueDirection(Direction.UP, this.mode === GameMode.LOCAL ? 'P2' : 'P1'));
+    kb.on('keydown-UP', () =>
+      this.queueDirection(Direction.UP, this.mode === GameMode.LOCAL ? 'P2' : 'P1')
+    );
     kb.on('keydown-DOWN', () =>
       this.queueDirection(Direction.DOWN, this.mode === GameMode.LOCAL ? 'P2' : 'P1')
     );
@@ -134,9 +145,7 @@ export class GameScene extends Phaser.Scene {
   private onTick(): void {
     if (!this.isRunning || this.isPaused) return;
 
-    this.snakes
-      .filter((player) => player.snake.isAlive)
-      .forEach((player) => player.snake.move());
+    this.snakes.filter((player) => player.snake.isAlive).forEach((player) => player.snake.move());
 
     this.updateSnakeDeaths();
 
